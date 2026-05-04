@@ -1,0 +1,24 @@
+language: "ko-KR"
+
+reviews:
+  profile: "detailed"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: true
+  path_filters:
+    - "!node_modules/**"
+    - "!.next/**"
+    - "!public/**"
+    - "!package-lock.json"
+
+  instructions: |
+    이 프로젝트는 다음과 같은 규칙을 따릅니다:
+    1. 커밋 컨벤션은 'Type:: Message' 형식을 따릅니다. (예: Feat:: 사용자 인증 기능 구현)
+    2. 아키텍처는 FSD(Feature-Sliced Design) 하이브리드 구조를 따릅니다.
+       - 레이어: app, widgets, features, entities, shared
+       - 의존성 규칙: 상위 레이어는 하위 레이어를 참조할 수 있으나, 하위 레이어는 상위 레이어를 참조할 수 없습니다. (Shared < Entities < Features < Widgets < App)
+    3. 기술 스택은 React 19, Next.js 16, Tailwind CSS 4를 사용합니다.
+    4. 모든 답변과 리뷰는 한국어로 친절하게 작성해 주세요.
+
+chat:
+  enabled: true
