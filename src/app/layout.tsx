@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'KOLOG - 일상을 기록하는 2초의 습관',
-  description: '매시간 2초씩, 당신의 하루를 특별하게 기록하세요.',
+  title: 'KOLOG',
+  description: '당신의 하루를 특별하게 기록하세요.',
 };
 
 export default function RootLayout({
