@@ -26,5 +26,6 @@ export default {
       ],
     ],
     'type-case': [0],
+    'subject-case': [0],
   },
 };
