@@ -24,6 +24,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'KOLOG',
   description: '당신의 하루를 특별하게 기록하세요.',
+  icons: {
+    apple: '/icon-192x192.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
