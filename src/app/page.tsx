@@ -24,7 +24,9 @@ const Main = () => {
                 <UsersIcon className="size-5" />
                 <p className="text-base font-bold text-gray-800">최강 2학년 2반</p>
               </div>
-              <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-500">바로가기→</p>
+              <button className="text-[0.625rem] tracking-[0.0125rem] text-gray-500">
+                바로가기→
+              </button>
             </div>
 
             <div className="flex flex-col gap-1.5 rounded-md border border-gray-100 p-3">
