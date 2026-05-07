@@ -1,3 +1,5 @@
+import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
+
 const LogCard = () => {
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">
@@ -9,7 +11,7 @@ const LogCard = () => {
           <div className="size-4 shrink-0 rounded-full bg-white" />
           <p className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white">하린</p>
         </div>
-        <div className="size-4 rounded-sm bg-white/30" />
+        <MoreVertical className="size-4 fill-white" />
       </div>
 
       <div className="text-primary-50 relative flex flex-col items-center text-center">
