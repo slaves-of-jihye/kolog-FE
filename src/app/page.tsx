@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import UsersIcon from '@/shared/assets/icons/users-icon.svg';
 import { LogCard } from '@/shared/ui';
+import { ProfileMenu } from '@/features/profile-menu';
 
 const Main = () => {
   return (
@@ -8,7 +9,7 @@ const Main = () => {
       <div className="flex flex-col gap-16 px-5 pt-[4.25rem] pb-16">
         <div className="flex items-center justify-between">
           <Image src="/logo.svg" alt="KOLOG" width={74} height={20} priority />
-          <div className="border-primary-300 size-8 shrink-0 rounded-full border bg-gray-200" />
+          <ProfileMenu />
         </div>
 
         <div className="flex flex-col gap-10">
