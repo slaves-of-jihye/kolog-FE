@@ -18,13 +18,7 @@ export const ProfileEditModal = ({ onClose, initialName }: ProfileEditModalProps
         className="absolute top-[13.1875rem] right-[2.0625rem] left-[2.0625rem] flex flex-col items-center gap-6 rounded-[0.5rem] bg-white px-9 py-8"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex w-full items-center gap-[3.875rem]">
-          <button onClick={onClose} aria-label="뒤로가기">
-            <ArrowLeft className="size-5 text-gray-600" strokeWidth={1.5} />
-          </button>
-          <p className="text-[0.875rem] text-gray-600">프로필 편집</p>
-        </div>
-
+        <p className="text-[0.875rem] text-gray-600">프로필 편집</p>
         <div className="flex w-full flex-col items-center gap-4">
           <div className="relative size-[6.875rem] shrink-0">
             <Profile className="size-full" border thick />
