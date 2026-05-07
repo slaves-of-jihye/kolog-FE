@@ -2,13 +2,14 @@
 
 import { ArrowLeft, Pencil } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '@/shared/ui';
 
 type ProfileEditModalProps = {
   onClose: () => void;
   initialName?: string;
 };
 
-export const ProfileEditModal = ({ onClose, initialName = '박하린' }: ProfileEditModalProps) => {
+export const ProfileEditModal = ({ onClose, initialName }: ProfileEditModalProps) => {
   const [nickname, setNickname] = useState(initialName);
 
   return (
@@ -17,7 +18,6 @@ export const ProfileEditModal = ({ onClose, initialName = '박하린' }: Profile
         className="absolute top-[13.1875rem] right-[2.0625rem] left-[2.0625rem] flex flex-col items-center gap-6 rounded-[0.5rem] bg-white px-9 py-8"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 헤더 */}
         <div className="flex w-full items-center gap-[3.875rem]">
           <button onClick={onClose} aria-label="뒤로가기">
             <ArrowLeft className="size-5 text-gray-600" strokeWidth={1.5} />
@@ -25,9 +25,7 @@ export const ProfileEditModal = ({ onClose, initialName = '박하린' }: Profile
           <p className="text-[0.875rem] text-gray-600">프로필 편집</p>
         </div>
 
-        {/* 프로필 섹션 */}
         <div className="flex w-full flex-col items-center gap-4">
-          {/* 아바타 + 편집 아이콘 */}
           <div className="relative size-[6.875rem] shrink-0">
             <div className="border-primary-300 size-full overflow-hidden rounded-full border-2 bg-gray-200" />
             <button
@@ -37,24 +35,19 @@ export const ProfileEditModal = ({ onClose, initialName = '박하린' }: Profile
               <Pencil className="size-full text-gray-600" strokeWidth={1.5} />
             </button>
           </div>
-
-          {/* 닉네임 입력 */}
           <div className="flex w-full flex-col gap-1">
             <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-700">닉네임</p>
             <div className="rounded-[0.25rem] bg-gray-100 px-2 py-[0.3125rem]">
               <input
-                className="w-full bg-transparent text-[0.625rem] tracking-[0.0125rem] text-gray-500 outline-none"
+                className="w-full bg-transparent text-[0.625rem] tracking-[0.0125rem] text-gray-800 outline-none"
+                placeholder="이름을 입력하세요"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
               />
             </div>
           </div>
         </div>
-
-        {/* 적용 버튼 */}
-        <button className="bg-primary-100 w-full rounded-[0.5rem] px-[0.9375rem] py-1.5 text-[0.75rem] tracking-[0.015rem] text-gray-600">
-          적용하기
-        </button>
+        <Button label="적용하기" />
       </div>
     </div>
   );
