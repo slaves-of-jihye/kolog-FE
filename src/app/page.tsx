@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import UsersIcon from '@/shared/assets/icons/users-icon.svg';
-import { LogCard } from '@/shared/ui';
+import { LogCard, Profile } from '@/shared/ui';
 import { ProfileMenu } from '@/features/profile-menu';
 
 const Main = () => {
@@ -29,7 +29,7 @@ const Main = () => {
 
             <div className="flex flex-col gap-1.5 rounded-md border border-gray-100 p-3">
               <div className="flex items-center gap-1">
-                <div className="border-primary-300 size-6 shrink-0 rounded-full border bg-gray-200" />
+                <Profile className="size-6" border />
                 <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">양정우</p>
               </div>
               <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">

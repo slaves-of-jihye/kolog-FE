@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { LogOut, Pencil } from 'lucide-react';
+import { Profile } from '@/shared/ui';
 import { ProfileEditModal } from './ProfileEditModal';
 
 type ProfileMenuProps = {
@@ -16,10 +17,12 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
   return (
     <div className="relative shrink-0">
       <button
-        className="border-primary-300 size-8 shrink-0 overflow-hidden rounded-full border bg-gray-200"
+        className="shrink-0"
         onClick={() => setIsMenuOpen((prev) => !prev)}
         aria-label="프로필 메뉴 열기"
-      />
+      >
+        <Profile className="size-8" border />
+      </button>
 
       {isMenuOpen && (
         <>
@@ -34,7 +37,7 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
             <div className="relative flex flex-col gap-1.5">
               {/* profile row */}
               <div className="flex items-center gap-1.5">
-                <div className="size-6 shrink-0 overflow-hidden rounded-full bg-gray-200" />
+                <Profile className="size-6" />
                 <span className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600">
                   {name}
                 </span>

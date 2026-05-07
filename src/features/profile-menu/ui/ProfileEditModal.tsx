@@ -2,7 +2,7 @@
 
 import { ArrowLeft, Pencil } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/shared/ui';
+import { Profile, Button } from '@/shared/ui';
 
 type ProfileEditModalProps = {
   onClose: () => void;
@@ -27,7 +27,7 @@ export const ProfileEditModal = ({ onClose, initialName }: ProfileEditModalProps
 
         <div className="flex w-full flex-col items-center gap-4">
           <div className="relative size-[6.875rem] shrink-0">
-            <div className="border-primary-300 size-full overflow-hidden rounded-full border-2 bg-gray-200" />
+            <Profile className="size-full" border thick />
             <button
               className="absolute right-0 bottom-0 size-[1.375rem]"
               aria-label="프로필 사진 변경"
