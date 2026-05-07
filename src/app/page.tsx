@@ -41,10 +41,6 @@ const Main = () => {
           </div>
         </div>
       </div>
-
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 px-[7.5rem] pt-[1.3125rem] pb-2">
-        <div className="h-[0.3125rem] w-[8.4375rem] rounded-full bg-[#21242c]" />
-      </div>
     </div>
   );
 };
