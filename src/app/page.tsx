@@ -15,7 +15,7 @@ const Main = () => {
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-2">
             <p className="text-base font-bold text-gray-800">내가 올린 로그</p>
-            <LogCard />
+            <LogCard authorName="하린" time="10:00" message="집에 가기" />
           </div>
 
           <div className="flex flex-col gap-2">
@@ -39,7 +39,7 @@ const Main = () => {
               </p>
             </div>
 
-            <LogCard />
+            <LogCard authorName="하린" time="10:00" message="집에 가기" />
           </div>
         </div>
       </div>
