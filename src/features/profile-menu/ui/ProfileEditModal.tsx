@@ -7,9 +7,10 @@ import { Profile, Button } from '@/shared/ui';
 type ProfileEditModalProps = {
   onClose: () => void;
   initialName?: string;
+  onConfirm?: (nickname: string) => void;
 };
 
-export const ProfileEditModal = ({ onClose, initialName }: ProfileEditModalProps) => {
+export const ProfileEditModal = ({ onClose, initialName, onConfirm }: ProfileEditModalProps) => {
   const [nickname, setNickname] = useState(initialName ?? '');
 
   return (
@@ -41,7 +42,7 @@ export const ProfileEditModal = ({ onClose, initialName }: ProfileEditModalProps
             </div>
           </div>
         </div>
-        <Button label="적용하기" />
+        <Button label="적용하기" onClick={() => onConfirm?.(nickname)} />
       </div>
     </div>
   );
