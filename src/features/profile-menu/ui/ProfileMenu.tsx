@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { LogOut, Pencil } from 'lucide-react';
 import { Profile } from '@/shared/ui';
@@ -14,11 +15,24 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
+
   return (
     <div className="relative shrink-0">
       <button
+        type="button"
         className="shrink-0"
         onClick={() => setIsMenuOpen((prev) => !prev)}
+        aria-haspopup="menu"
+        aria-expanded={isMenuOpen}
+        aria-controls="profile-menu"
         aria-label="프로필 메뉴 열기"
       >
         <Profile className="size-8" border />
@@ -28,7 +42,12 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsMenuOpen(false)} />
 
-          <div className="absolute top-10 right-0 z-50 overflow-hidden rounded-lg p-2.5 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)]">
+          <div
+            id="profile-menu"
+            role="menu"
+            tabIndex={-1}
+            className="absolute top-10 right-0 z-50 overflow-hidden rounded-lg p-2.5 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)]"
+          >
             {/* liquid glass background */}
             <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-white/50 backdrop-blur-xl" />
             {/* inner shadow ring */}
@@ -46,6 +65,8 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
               {/* menu items */}
               <div className="flex flex-col gap-1.5">
                 <button
+                  type="button"
+                  role="menuitem"
                   className="flex w-[7.5rem] items-center gap-1.5 rounded-xl px-[0.3125rem] py-0.5 text-left transition-colors hover:bg-white/60 active:bg-white/80"
                   onClick={() => {
                     setIsMenuOpen(false);
@@ -59,6 +80,8 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
                 </button>
 
                 <button
+                  type="button"
+                  role="menuitem"
                   className="flex w-[7.5rem] items-center gap-1.5 px-[0.3125rem] py-0.5 text-left transition-colors hover:bg-white/60 active:bg-white/80"
                   onClick={() => {
                     setIsMenuOpen(false);
