@@ -57,12 +57,7 @@ const LogCard = ({
           ))}
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={onEmotion}
-          aria-label="감정 반응"
-          className="relative size-4"
-        >
+        <button type="button" onClick={onEmotion} aria-label="공감하기" className="relative size-4">
           <EmotionIcon className="size-full" />
         </button>
       )}

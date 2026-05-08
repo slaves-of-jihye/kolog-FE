@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Archive } from 'lucide-react';
-import { LogCard } from '@/shared/ui';
 import { ProfileMenu } from '@/features/profile-menu';
+import { LogList } from './LogList';
 
 const mockLogs = [
   { authorName: '하린', time: '10:00', message: '집에 가기' },
@@ -53,19 +53,7 @@ const Log = () => {
             ))}
           </div>
 
-          {/* 로그 카드 목록 */}
-          <div className="flex flex-col gap-2">
-            {mockLogs.map((log, i) => (
-              <LogCard
-                key={i}
-                authorName={log.authorName}
-                time={log.time}
-                message={log.message}
-                showProgress={false}
-                comment={log.comment}
-              />
-            ))}
-          </div>
+          <LogList logs={mockLogs} />
         </div>
       </div>
     </div>
