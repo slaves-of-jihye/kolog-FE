@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Pencil } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { Profile, Button } from '@/shared/ui';
 
@@ -10,7 +10,7 @@ type ProfileEditModalProps = {
 };
 
 export const ProfileEditModal = ({ onClose, initialName }: ProfileEditModalProps) => {
-  const [nickname, setNickname] = useState(initialName);
+  const [nickname, setNickname] = useState(initialName ?? '');
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]" onClick={onClose}>
