@@ -1,16 +1,31 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import Providers from './providers';
+import { SplashScreen } from '@/widgets/splash';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const ydestreet = localFont({
+  src: [
+    {
+      path: '../shared/assets/fonts/YdestreetL.ttf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../shared/assets/fonts/YdestreetB.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-ydestreet',
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const okDanDan = localFont({
+  src: '../shared/assets/fonts/OkDanDan-Bold.ttf',
+  weight: '700',
+  variable: '--font-ok-dan-dan',
+  display: 'swap',
 });
 
 export const viewport: Viewport = {
@@ -42,7 +57,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${ydestreet.variable} ${okDanDan.variable} antialiased`}>
+        <SplashScreen />
         <Providers>{children}</Providers>
       </body>
     </html>

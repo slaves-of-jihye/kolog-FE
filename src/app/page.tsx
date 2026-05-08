@@ -1,65 +1,49 @@
 import Image from 'next/image';
+import UsersIcon from '@/shared/assets/icons/users-icon.svg';
+import { LogCard, Profile } from '@/shared/ui';
+import { ProfileMenu } from '@/features/profile-menu';
 
-export default function Home() {
+const Main = () => {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl leading-10 font-semibold tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{' '}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{' '}
-            or the{' '}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{' '}
-            center.
-          </p>
+    <div className="relative min-h-screen w-full bg-white">
+      <div className="flex flex-col gap-16 px-5 pt-[4.25rem] pb-16">
+        <div className="flex items-center justify-between">
+          <Image src="/logo.svg" alt="KOLOG" width={74} height={20} priority />
+          <ProfileMenu />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="bg-foreground text-background flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 transition-colors hover:bg-[#383838] md:w-[158px] dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] md:w-[158px] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-2">
+            <p className="text-base font-bold text-gray-800">내가 올린 로그</p>
+            <LogCard authorName="하린" time="10:00" message="집에 가기" />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1">
+                <UsersIcon className="size-5" />
+                <p className="text-base font-bold text-gray-800">최강 2학년 2반</p>
+              </div>
+              <button className="text-[0.625rem] tracking-[0.0125rem] text-gray-500">
+                바로가기→
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-1.5 rounded-md border border-gray-100 p-3">
+              <div className="flex items-center gap-1">
+                <Profile className="size-6" border />
+                <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">양정우</p>
+              </div>
+              <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">
+                양정우 님이 정현태 님의 로그에 &apos;😳&apos; 반응을 했습니다.
+              </p>
+            </div>
+
+            <LogCard authorName="하린" time="10:00" message="집에 가기" />
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
-}
+};
+export default Main;
