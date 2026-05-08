@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 type ProfileProps = {
   className?: string;
   border?: boolean;
@@ -21,9 +23,9 @@ const Profile = ({
 
   return (
     <div
-      className={`shrink-0 overflow-hidden rounded-full bg-gray-200 ${borderClass} ${className}`.trim()}
+      className={`relative shrink-0 overflow-hidden rounded-full bg-gray-200 ${borderClass} ${className}`.trim()}
     >
-      {src && <img src={src} alt={alt} className="h-full w-full object-cover" />}
+      {src && <Image src={src} alt={alt} fill className="object-cover" />}
     </div>
   );
 };
