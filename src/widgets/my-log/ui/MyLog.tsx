@@ -1,18 +1,21 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CameraPermissionGuide, VideoRecorder, useVideoRecord } from '@/features/video-record';
 import { LogCard } from '@/shared/ui';
 
 export const MyLog = () => {
+  const router = useRouter();
   const { state, blob, stream, openCamera, flipCamera, startRecording, closeCamera } =
     useVideoRecord(2000);
 
   useEffect(() => {
-    if (state === 'done' && blob) {
-      // TODO: 로그 작성 페이지로 이동 (blob 전달)
-    }
-  }, [state, blob]);
+    if (state !== 'done' || !blob) return;
+    const url = URL.createObjectURL(blob);
+    sessionStorage.setItem('uploadVideoUrl', url);
+    router.push('/log/upload');
+  }, [state, blob, router]);
 
   return (
     <>
