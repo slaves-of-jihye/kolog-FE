@@ -26,6 +26,7 @@ export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
   const streamRef = useRef<MediaStream | null>(null);
+  const recordingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openCamera = async () => {
     if (state !== 'idle') return;
@@ -93,6 +94,8 @@ export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
     };
 
     recorder.onstop = () => {
+      clearTimeout(recordingTimerRef.current ?? undefined);
+      recordingTimerRef.current = null;
       setBlob(new Blob(chunks, { type: mimeType }));
       setState('done');
       streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -103,12 +106,14 @@ export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
     recorder.start();
     setState('recording');
 
-    setTimeout(() => {
+    recordingTimerRef.current = setTimeout(() => {
       if (recorder.state === 'recording') recorder.stop();
     }, durationMs);
   };
 
   const closeCamera = () => {
+    clearTimeout(recordingTimerRef.current ?? undefined);
+    recordingTimerRef.current = null;
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     setStream(null);
@@ -118,6 +123,7 @@ export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
 
   useEffect(() => {
     return () => {
+      clearTimeout(recordingTimerRef.current ?? undefined);
       streamRef.current?.getTracks().forEach((t) => t.stop());
     };
   }, []);

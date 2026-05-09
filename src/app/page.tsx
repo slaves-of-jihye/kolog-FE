@@ -24,7 +24,7 @@ const Main = () => {
               </Link>
             </div>
 
-            <div className="flex flex-col gap-1.5 rounded-xl border border-gray-100 p-3">
+            <div className="flex flex-col gap-1.5 rounded-md border border-gray-100 p-3">
               <div className="flex items-center gap-1">
                 <Profile className="size-6" border />
                 <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">양정우</p>

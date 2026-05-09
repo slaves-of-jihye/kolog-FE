@@ -68,7 +68,7 @@ export const VideoRecorder = ({ stream, state, onRecord, onFlip, onClose }: Vide
       )}
 
       {/* 상단: 닫기 + 카메라 전환 */}
-      <div className="absolute top-0 right-0 left-0 flex items-center justify-between px-5 pt-12">
+      <div className="absolute top-0 right-0 left-0 flex items-center justify-between px-5 pt-[calc(3rem+env(safe-area-inset-top,0px))]">
         <button
           type="button"
           aria-label="닫기"
@@ -89,7 +89,7 @@ export const VideoRecorder = ({ stream, state, onRecord, onFlip, onClose }: Vide
       </div>
 
       {/* 하단: 촬영 버튼 */}
-      <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center pb-16">
+      <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center pb-[calc(4rem+env(safe-area-inset-bottom,0px))]">
         <button
           type="button"
           aria-label={isRecording ? '촬영 중' : '촬영 시작'}
