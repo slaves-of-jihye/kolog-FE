@@ -41,6 +41,27 @@ export const MyLog = () => {
       )}
 
       {state === 'denied' && <CameraPermissionGuide onClose={closeCamera} />}
+      {state === 'no-device' && (
+        <CameraPermissionGuide
+          onClose={closeCamera}
+          title="카메라를 찾을 수 없어요"
+          description="카메라 기기가 연결되어 있는지 확인한 뒤 다시 시도해 주세요."
+        />
+      )}
+      {state === 'busy' && (
+        <CameraPermissionGuide
+          onClose={closeCamera}
+          title="카메라를 사용할 수 없어요"
+          description="카메라를 사용 중인 다른 앱이 있습니다. 해당 앱을 종료한 뒤 다시 시도해 주세요."
+        />
+      )}
+      {state === 'error' && (
+        <CameraPermissionGuide
+          onClose={closeCamera}
+          title="오류가 발생했어요"
+          description="카메라를 시작할 수 없습니다. 잠시 후 다시 시도해 주세요."
+        />
+      )}
     </>
   );
 };

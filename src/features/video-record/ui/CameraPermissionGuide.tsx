@@ -2,9 +2,15 @@
 
 type CameraPermissionGuideProps = {
   onClose: () => void;
+  title?: string;
+  description?: string;
 };
 
-export const CameraPermissionGuide = ({ onClose }: CameraPermissionGuideProps) => {
+export const CameraPermissionGuide = ({
+  onClose,
+  title = '카메라 권한이 필요해요',
+  description = '브라우저 주소창의 자물쇠 아이콘을 눌러 카메라 권한을 허용한 뒤 다시 시도해 주세요.',
+}: CameraPermissionGuideProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40" onClick={onClose}>
       <div
@@ -13,10 +19,8 @@ export const CameraPermissionGuide = ({ onClose }: CameraPermissionGuideProps) =
       >
         <div className="mx-auto h-1 w-10 rounded-full bg-gray-300" />
         <div className="flex flex-col gap-1.5">
-          <p className="text-base font-bold text-gray-800">카메라 권한이 필요해요</p>
-          <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">
-            브라우저 주소창의 자물쇠 아이콘을 눌러 카메라 권한을 허용한 뒤 다시 시도해 주세요.
-          </p>
+          <p className="text-base font-bold text-gray-800">{title}</p>
+          <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">{description}</p>
         </div>
         <button
           type="button"

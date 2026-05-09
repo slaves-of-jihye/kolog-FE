@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-export type RecordState = 'idle' | 'previewing' | 'recording' | 'done' | 'denied';
+export type RecordState =
+  | 'idle'
+  | 'previewing'
+  | 'recording'
+  | 'done'
+  | 'denied'
+  | 'no-device'
+  | 'busy'
+  | 'error';
 
 const getMimeType = (): string => {
   if (typeof MediaRecorder === 'undefined') return 'video/mp4';
@@ -26,8 +34,23 @@ export const useVideoRecord = (durationMs = 2000) => {
       setStream(mediaStream);
       setState('previewing');
     } catch (err) {
-      if (err instanceof DOMException && err.name === 'NotAllowedError') {
-        setState('denied');
+      console.error('[useVideoRecord] openCamera failed:', err);
+      if (err instanceof DOMException) {
+        switch (err.name) {
+          case 'NotAllowedError':
+            setState('denied');
+            break;
+          case 'NotFoundError':
+            setState('no-device');
+            break;
+          case 'NotReadableError':
+            setState('busy');
+            break;
+          default:
+            setState('error');
+        }
+      } else {
+        setState('error');
       }
     }
   };
