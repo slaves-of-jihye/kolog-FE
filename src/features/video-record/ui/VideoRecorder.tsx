@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { RecordState } from '../model/useVideoRecord';
 
 const RECORD_DURATION_S = 2;
-import type { RecordState } from '../model/useVideoRecord';
 
 type VideoRecorderProps = {
   stream: MediaStream;
