@@ -26,15 +26,18 @@ export const LogUpload = () => {
 
   const handleDownload = () => {
     if (!videoUrl) return;
+    const mimeType = sessionStorage.getItem('uploadVideoMimeType') ?? 'video/mp4';
+    const ext = mimeType === 'video/webm' ? 'webm' : 'mp4';
     const a = document.createElement('a');
     a.href = videoUrl;
-    a.download = `kolog-${Date.now()}.mp4`;
+    a.download = `kolog-${Date.now()}.${ext}`;
     a.click();
   };
 
   const handleUpload = () => {
     // TODO: API 연동
     sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem('uploadVideoMimeType');
     router.push('/');
   };
 

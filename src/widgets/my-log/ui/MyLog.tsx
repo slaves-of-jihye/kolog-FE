@@ -19,6 +19,7 @@ export const MyLog = () => {
     if (state !== 'done' || !blob) return;
     const url = URL.createObjectURL(blob);
     sessionStorage.setItem('uploadVideoUrl', url);
+    sessionStorage.setItem('uploadVideoMimeType', blob.type);
     router.push('/log/upload');
   }, [state, blob, router]);
 
