@@ -31,7 +31,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-[3.75rem]">
+    <form noValidate onSubmit={handleSubmit} className="flex w-full flex-col gap-[3.75rem]">
       <div className="flex flex-col gap-6">
         <FormField
           label="이메일"
