@@ -1,9 +1,6 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { ProfileMenu } from '@/features/profile-menu';
+import { Header } from '@/widgets/header';
 import { LogList } from './LogList';
 import { VlogBanner } from './VlogBanner';
-import ArchiveIcon from '@/shared/assets/icons/archive.svg';
 
 const mockLogs = [
   { authorName: '하린', time: '10:00', message: '집에 가기' },
@@ -28,16 +25,7 @@ const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
   return (
     <div className="relative min-h-screen w-full bg-white">
       <div className="flex flex-col gap-16 px-5 pt-[4.25rem] pb-16">
-        {/* 헤더 */}
-        <div className="flex items-center justify-between">
-          <Image src="/logo.svg" alt="KOLOG" width={74} height={20} priority />
-          <div className="flex items-center gap-2">
-            <Link href="/log/history" aria-label="보관함">
-              <ArchiveIcon className="h-8 w-[2.125rem] shrink-0" />
-            </Link>
-            <ProfileMenu />
-          </div>
-        </div>
+        <Header />
 
         <div className="flex flex-col gap-3">
           {/* 과거 로그 조회 배너 */}

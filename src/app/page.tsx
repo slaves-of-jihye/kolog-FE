@@ -1,16 +1,12 @@
-import Image from 'next/image';
 import UsersIcon from '@/shared/assets/icons/users-icon.svg';
 import { LogCard, Profile } from '@/shared/ui';
-import { ProfileMenu } from '@/features/profile-menu';
+import { Header } from '@/widgets/header';
 
 const Main = () => {
   return (
     <div className="relative min-h-screen w-full bg-white">
       <div className="flex flex-col gap-16 px-5 pt-[4.25rem] pb-16">
-        <div className="flex items-center justify-between">
-          <Image src="/logo.svg" alt="KOLOG" width={74} height={20} priority />
-          <ProfileMenu />
-        </div>
+        <Header />
 
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-2">

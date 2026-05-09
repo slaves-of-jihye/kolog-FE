@@ -1,8 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { LogCard } from '@/shared/ui';
-import { ProfileMenu } from '@/features/profile-menu';
-import ArchiveIcon from '@/shared/assets/icons/archive.svg';
+import { Header } from '@/widgets/header';
 
 type HistoryEntry = {
   date: string;
@@ -20,16 +17,7 @@ const History = () => {
   return (
     <div className="relative min-h-screen w-full bg-white">
       <div className="flex flex-col gap-16 px-5 pt-[4.25rem] pb-16">
-        {/* 헤더 */}
-        <div className="flex items-center justify-between">
-          <Image src="/logo.svg" alt="KOLOG" width={74} height={20} priority />
-          <div className="flex items-center gap-2">
-            <Link href="/log/history" aria-label="보관함">
-              <ArchiveIcon className="h-8 w-[2.125rem] shrink-0" />
-            </Link>
-            <ProfileMenu />
-          </div>
-        </div>
+        <Header />
 
         {/* 날짜별 기록 목록 */}
         <div className="flex flex-col gap-3">
