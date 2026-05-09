@@ -5,8 +5,8 @@ import { VlogBanner } from '@/widgets/vlog-banner';
 type SearchParams = Promise<{ date?: string; hours?: string; completed?: string }>;
 
 const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { date, hours, completed } = await searchParams;
-  const isPastView = Boolean(date && hours);
+  const { date, completed } = await searchParams;
+  const isPastView = Boolean(date);
   const isCompleted = completed === 'true';
 
   return (
