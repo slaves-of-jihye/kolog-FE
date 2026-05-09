@@ -1,8 +1,9 @@
 import Image from 'next/image';
-import { Archive } from 'lucide-react';
+import Link from 'next/link';
 import { ProfileMenu } from '@/features/profile-menu';
 import { LogList } from './LogList';
 import { VlogBanner } from './VlogBanner';
+import ArchiveIcon from '@/shared/assets/icons/archive.svg';
 
 const mockLogs = [
   { authorName: '하린', time: '10:00', message: '집에 가기' },
@@ -31,13 +32,9 @@ const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
         <div className="flex items-center justify-between">
           <Image src="/logo.svg" alt="KOLOG" width={74} height={20} priority />
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="보관함"
-              className="flex size-8 items-center justify-center"
-            >
-              <Archive className="size-full text-gray-800" strokeWidth={1.5} />
-            </button>
+            <Link href="/log/history" aria-label="보관함">
+              <ArchiveIcon className="h-8 w-[2.125rem] shrink-0" />
+            </Link>
             <ProfileMenu />
           </div>
         </div>
