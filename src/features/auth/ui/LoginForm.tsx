@@ -2,13 +2,31 @@
 
 import { useState } from 'react';
 import { FormField } from '@/shared/ui';
+import { validateEmail, validatePassword } from '../model/validators';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (emailError) setEmailError(validateEmail(value));
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (passwordError) setPasswordError(validatePassword(value));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const eErr = validateEmail(email);
+    const pErr = validatePassword(password);
+    setEmailError(eErr);
+    setPasswordError(pErr);
+    if (eErr || pErr) return;
     // TODO: API 연동
   };
 
@@ -21,7 +39,8 @@ export const LoginForm = () => {
           type="email"
           placeholder="이메일을 입력하세요"
           value={email}
-          onChange={setEmail}
+          onChange={handleEmailChange}
+          error={emailError}
         />
         <FormField
           label="비밀번호"
@@ -29,7 +48,8 @@ export const LoginForm = () => {
           type="password"
           placeholder="비밀번호를 입력하세요"
           value={password}
-          onChange={setPassword}
+          onChange={handlePasswordChange}
+          error={passwordError}
         />
       </div>
       <button
