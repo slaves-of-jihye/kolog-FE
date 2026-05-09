@@ -14,6 +14,8 @@ type LogCardProps = {
   activeSegmentIndex?: number;
   showProgress?: boolean;
   showUploadCta?: boolean;
+  uploadCtaLabel?: string;
+  onUploadCtaClick?: () => void;
   onEmotion?: () => void;
   comment?: LogComment;
 };
@@ -26,6 +28,8 @@ const LogCard = ({
   activeSegmentIndex = 6,
   showProgress = true,
   showUploadCta = false,
+  uploadCtaLabel = '눌러서 촬영',
+  onUploadCtaClick,
   onEmotion,
   comment,
 }: LogCardProps) => {
@@ -47,9 +51,16 @@ const LogCard = ({
       <div className="text-primary-50 relative flex flex-col items-center gap-0.5 text-center">
         <p className="font-display text-[2rem] leading-[0.9] whitespace-nowrap">{time}</p>
         {showUploadCta ? (
-          <div className="flex max-w-[7.25rem] items-center justify-center rounded-full border border-gray-100 bg-gradient-to-b from-gray-50/80 to-gray-50/60 px-2 py-1 backdrop-blur-[6px]">
-            <p className="truncate text-[0.5rem] tracking-[0.01rem] text-gray-700">눌러서 촬영</p>
-          </div>
+          <button
+            type="button"
+            onClick={onUploadCtaClick}
+            disabled={!onUploadCtaClick}
+            className="flex max-w-[7.25rem] items-center justify-center rounded-full border border-gray-100 bg-gradient-to-b from-gray-50/80 to-gray-50/60 px-2 py-1 backdrop-blur-[6px] disabled:cursor-default"
+          >
+            <p className="truncate text-[0.5rem] tracking-[0.01rem] text-gray-700">
+              {uploadCtaLabel}
+            </p>
+          </button>
         ) : (
           <p className="text-[0.5rem] tracking-[0.01rem]">{message}</p>
         )}

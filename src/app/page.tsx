@@ -2,6 +2,7 @@ import Link from 'next/link';
 import UsersIcon from '@/shared/assets/icons/users-icon.svg';
 import { LogCard, Profile } from '@/shared/ui';
 import { Header } from '@/widgets/header';
+import { MyLog } from '@/widgets/my-log';
 
 const Main = () => {
   return (
@@ -10,10 +11,7 @@ const Main = () => {
         <Header />
 
         <div className="flex flex-col gap-10">
-          <div className="flex flex-col gap-2">
-            <p className="text-base font-bold text-gray-800">내가 올린 로그</p>
-            <LogCard authorName="하린" time="10:00" message="집에 가기" showUploadCta />
-          </div>
+          <MyLog />
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
