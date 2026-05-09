@@ -10,16 +10,16 @@ type HistoryEntry = {
 const mockHistory: HistoryEntry[] = [
   {
     date: '4월 24일의 기록',
-    dateParam: '4/24',
+    dateParam: '4-24',
     log: { authorName: '하린', time: '10:00', message: '집에 가기' },
   },
   {
     date: '4월 25일의 기록',
-    dateParam: '4/25',
+    dateParam: '4-25',
     log: { authorName: '하린', time: '10:00', message: '집에 가기' },
   },
-  { date: '4월 26일의 기록', dateParam: '4/26' },
-  { date: '4월 27일의 기록', dateParam: '4/27' },
+  { date: '4월 26일의 기록', dateParam: '4-26' },
+  { date: '4월 27일의 기록', dateParam: '4-27' },
 ];
 
 export const HistoryList = () => {
@@ -39,7 +39,7 @@ export const HistoryList = () => {
                 message={entry.log.message}
               />
               <Link
-                href={`/log?date=${entry.dateParam}`}
+                href={`/log?date=${encodeURIComponent(entry.dateParam ?? '')}`}
                 aria-label={`${entry.date} 로그 보기`}
                 className="text-left text-[0.625rem] tracking-[0.0125rem] text-gray-500"
               >

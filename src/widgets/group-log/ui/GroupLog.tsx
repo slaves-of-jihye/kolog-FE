@@ -22,7 +22,7 @@ export const GroupLog = ({ date }: GroupLogProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <p className="text-base font-bold text-gray-800">최강 2학년 2반 로그</p>
-        <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">{date ?? '4/24'}</p>
+        <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">{date ?? '4-24'}</p>
       </div>
 
       <div className="flex h-1 items-center gap-0.5">
