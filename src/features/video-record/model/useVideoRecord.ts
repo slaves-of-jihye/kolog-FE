@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { VIDEO_RECORD_DURATION_MS } from '../config';
 
 export type RecordState =
   | 'idle'
@@ -19,7 +20,7 @@ const getMimeType = (): string => {
 const requestStream = (facingMode: 'user' | 'environment') =>
   navigator.mediaDevices.getUserMedia({ video: { facingMode }, audio: true });
 
-export const useVideoRecord = (durationMs = 2000) => {
+export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
   const [state, setState] = useState<RecordState>('idle');
   const [blob, setBlob] = useState<Blob | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);

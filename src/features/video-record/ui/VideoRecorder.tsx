@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { VIDEO_RECORD_DURATION_S } from '../config';
 import type { RecordState } from '../model/useVideoRecord';
-
-const RECORD_DURATION_S = 2;
 
 type VideoRecorderProps = {
   stream: MediaStream;
@@ -45,7 +44,7 @@ export const VideoRecorder = ({ stream, state, onRecord, onFlip, onClose }: Vide
   useEffect(() => {
     if (state !== 'recording') return;
 
-    const init = setTimeout(() => setCountdown(RECORD_DURATION_S), 0);
+    const init = setTimeout(() => setCountdown(VIDEO_RECORD_DURATION_S), 0);
     const interval = setInterval(
       () => setCountdown((prev) => (prev !== null && prev > 1 ? prev - 1 : null)),
       1000,

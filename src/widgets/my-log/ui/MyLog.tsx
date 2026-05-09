@@ -2,13 +2,18 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { CameraPermissionGuide, VideoRecorder, useVideoRecord } from '@/features/video-record';
+import {
+  CameraPermissionGuide,
+  VIDEO_RECORD_DURATION_MS,
+  VideoRecorder,
+  useVideoRecord,
+} from '@/features/video-record';
 import { LogCard } from '@/shared/ui';
 
 export const MyLog = () => {
   const router = useRouter();
   const { state, blob, stream, openCamera, flipCamera, startRecording, closeCamera } =
-    useVideoRecord(2000);
+    useVideoRecord(VIDEO_RECORD_DURATION_MS);
 
   useEffect(() => {
     if (state !== 'done' || !blob) return;
