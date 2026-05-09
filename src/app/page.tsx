@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import UsersIcon from '@/shared/assets/icons/users-icon.svg';
 import { LogCard, Profile } from '@/shared/ui';
 import { Header } from '@/widgets/header';
@@ -11,7 +12,7 @@ const Main = () => {
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-2">
             <p className="text-base font-bold text-gray-800">내가 올린 로그</p>
-            <LogCard authorName="하린" time="10:00" message="집에 가기" />
+            <LogCard authorName="하린" time="10:00" message="집에 가기" showUploadCta />
           </div>
 
           <div className="flex flex-col gap-2">
@@ -20,12 +21,12 @@ const Main = () => {
                 <UsersIcon className="size-5" />
                 <p className="text-base font-bold text-gray-800">최강 2학년 2반</p>
               </div>
-              <button className="text-[0.625rem] tracking-[0.0125rem] text-gray-500">
+              <Link href="/log" className="text-[0.625rem] tracking-[0.0125rem] text-gray-500">
                 바로가기→
-              </button>
+              </Link>
             </div>
 
-            <div className="flex flex-col gap-1.5 rounded-md border border-gray-100 p-3">
+            <div className="flex flex-col gap-1.5 rounded-xl border border-gray-100 p-3">
               <div className="flex items-center gap-1">
                 <Profile className="size-6" border />
                 <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">양정우</p>
@@ -35,7 +36,7 @@ const Main = () => {
               </p>
             </div>
 
-            <LogCard authorName="하린" time="10:00" message="집에 가기" />
+            <LogCard authorName="하린" time="10:00" message="명한 것도 어느 것도여야죠" />
           </div>
         </div>
       </div>
