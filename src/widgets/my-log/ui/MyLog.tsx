@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   CameraPermissionGuide,
@@ -14,14 +14,23 @@ export const MyLog = () => {
   const router = useRouter();
   const { state, blob, stream, openCamera, flipCamera, startRecording, closeCamera } =
     useVideoRecord(VIDEO_RECORD_DURATION_MS);
+  const urlRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (state !== 'done' || !blob) return;
+    if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     const url = URL.createObjectURL(blob);
+    urlRef.current = url;
     sessionStorage.setItem('uploadVideoUrl', url);
     sessionStorage.setItem('uploadVideoMimeType', blob.type);
     router.push('/log/upload');
   }, [state, blob, router]);
+
+  useEffect(() => {
+    return () => {
+      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+    };
+  }, []);
 
   return (
     <>
