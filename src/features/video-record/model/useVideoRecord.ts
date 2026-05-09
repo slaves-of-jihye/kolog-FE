@@ -65,13 +65,17 @@ export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
       streamRef.current = mediaStream;
       setStream(mediaStream);
       setFacingMode(next);
-    } catch {
-      // 전환 실패 시 기존 방향으로 재시도
+    } catch (err) {
+      console.error(`[useVideoRecord] flipCamera failed (facingMode: ${next}):`, err);
       try {
         const fallback = await requestStream(facingMode);
         streamRef.current = fallback;
         setStream(fallback);
-      } catch {
+      } catch (fallbackErr) {
+        console.error(
+          `[useVideoRecord] flipCamera fallback failed (facingMode: ${facingMode}):`,
+          fallbackErr,
+        );
         closeCamera();
       }
     }
