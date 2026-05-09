@@ -13,6 +13,9 @@ type LogCardProps = {
   totalSegments?: number;
   activeSegmentIndex?: number;
   showProgress?: boolean;
+  showUploadCta?: boolean;
+  uploadCtaLabel?: string;
+  onUploadCtaClick?: () => void;
   onEmotion?: () => void;
   comment?: LogComment;
 };
@@ -24,6 +27,9 @@ const LogCard = ({
   totalSegments = 7,
   activeSegmentIndex = 6,
   showProgress = true,
+  showUploadCta = false,
+  uploadCtaLabel = '눌러서 촬영',
+  onUploadCtaClick,
   onEmotion,
   comment,
 }: LogCardProps) => {
@@ -42,12 +48,27 @@ const LogCard = ({
         <MoreVertical className="size-4 fill-white" />
       </div>
 
-      <div className="text-primary-50 relative flex flex-col items-center text-center">
+      <div className="text-primary-50 relative flex flex-col items-center gap-0.5 text-center">
         <p className="font-display text-[2rem] leading-[0.9] whitespace-nowrap">{time}</p>
-        <p className="text-[0.5rem] tracking-[0.01rem]">{message}</p>
+        {showUploadCta ? (
+          <button
+            type="button"
+            onClick={onUploadCtaClick}
+            disabled={!onUploadCtaClick}
+            className="flex max-w-[7.25rem] items-center justify-center rounded-full border border-gray-100 bg-gradient-to-b from-gray-50/80 to-gray-50/60 px-2 py-1 backdrop-blur-[6px] disabled:cursor-default"
+          >
+            <p className="truncate text-[0.5rem] tracking-[0.01rem] text-gray-700">
+              {uploadCtaLabel}
+            </p>
+          </button>
+        ) : (
+          <p className="text-[0.5rem] tracking-[0.01rem]">{message}</p>
+        )}
       </div>
 
-      {showProgress ? (
+      {showUploadCta ? (
+        <div aria-hidden="true" className="size-4" />
+      ) : showProgress ? (
         <div className="relative flex h-0.5 w-[10.5rem] items-center gap-0.5">
           {Array.from({ length: totalSegments }).map((_, i) => (
             <div
