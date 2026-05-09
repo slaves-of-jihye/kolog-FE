@@ -12,6 +12,7 @@ const SESSION_KEY = 'uploadVideoUrl';
 export const LogUpload = () => {
   const router = useRouter();
   // lazy initializer로 SSR 안전하게 sessionStorage 읽기
+  const [caption, setCaption] = useState('집에 가기');
   const [videoUrl] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
     return sessionStorage.getItem(SESSION_KEY);
@@ -66,7 +67,13 @@ export const LogUpload = () => {
 
           <div className="text-primary-50 relative flex flex-col items-center text-center">
             <p className="font-display text-[2rem] leading-[0.9] whitespace-nowrap">10:00</p>
-            <p className="text-[0.5rem] tracking-[0.01rem]">집에 가기</p>
+            <input
+              type="text"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="캡션 입력"
+              className="text-primary-50 placeholder:text-primary-50/60 max-w-[7.25rem] truncate bg-transparent text-center text-[0.5rem] tracking-[0.01rem] outline-none"
+            />
           </div>
 
           <div className="relative flex w-full items-center justify-end">
