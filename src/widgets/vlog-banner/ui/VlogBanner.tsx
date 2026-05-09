@@ -19,7 +19,7 @@ export const VlogBanner = ({ date, isCompleted = false, previewLog }: VlogBanner
           오늘의 브이로그
         </p>
         <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">
-          {date}의 브이로그가 완성되었습니다!
+          {date ? `${date}의 브이로그가 완성되었습니다!` : '브이로그가 완성되었습니다!'}
         </p>
         {previewLog && (
           <div className="relative flex h-[162px] flex-col items-center justify-between overflow-hidden rounded-[0.625rem] bg-gray-800 p-3">
