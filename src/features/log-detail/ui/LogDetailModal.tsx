@@ -56,7 +56,13 @@ export const LogDetailModal = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onClick={onClose}
     >
-      <div className="flex w-[21rem] flex-col gap-2" onClick={(e) => e.stopPropagation()}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="로그 상세"
+        className="flex w-[21rem] flex-col gap-2"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* 선택된 로그 카드 */}
         <LogCard authorName={authorName} time={time} message={message} showProgress={false} />
 
