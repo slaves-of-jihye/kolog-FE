@@ -66,6 +66,7 @@ export const SignupForm = () => {
           value={email}
           onChange={handleEmailChange}
           error={emailError}
+          autoComplete="email"
         />
         <FormField
           label="비밀번호"
@@ -75,6 +76,7 @@ export const SignupForm = () => {
           value={password}
           onChange={handlePasswordChange}
           error={passwordError}
+          autoComplete="new-password"
         />
         <FormField
           label="비밀번호 확인"
@@ -84,6 +86,7 @@ export const SignupForm = () => {
           value={passwordConfirm}
           onChange={handlePasswordConfirmChange}
           error={passwordConfirmError}
+          autoComplete="new-password"
         />
         <FormField
           label="닉네임"

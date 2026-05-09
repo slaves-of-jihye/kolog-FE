@@ -41,6 +41,7 @@ export const LoginForm = () => {
           value={email}
           onChange={handleEmailChange}
           error={emailError}
+          autoComplete="email"
         />
         <FormField
           label="비밀번호"
@@ -50,6 +51,7 @@ export const LoginForm = () => {
           value={password}
           onChange={handlePasswordChange}
           error={passwordError}
+          autoComplete="current-password"
         />
       </div>
       <button
