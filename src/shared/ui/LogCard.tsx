@@ -1,4 +1,10 @@
 import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
+import EmotionIcon from '@/shared/assets/icons/emotion-icon.svg';
+
+type LogComment = {
+  authorName: string;
+  text: string;
+};
 
 type LogCardProps = {
   authorName: string;
@@ -6,6 +12,9 @@ type LogCardProps = {
   message: string;
   totalSegments?: number;
   activeSegmentIndex?: number;
+  showProgress?: boolean;
+  onEmotion?: () => void;
+  comment?: LogComment;
 };
 
 const LogCard = ({
@@ -14,6 +23,9 @@ const LogCard = ({
   message,
   totalSegments = 7,
   activeSegmentIndex = 6,
+  showProgress = true,
+  onEmotion,
+  comment,
 }: LogCardProps) => {
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">
@@ -35,14 +47,31 @@ const LogCard = ({
         <p className="text-[0.5rem] tracking-[0.01rem]">{message}</p>
       </div>
 
-      <div className="relative flex h-0.5 w-[10.5rem] items-center gap-0.5">
-        {Array.from({ length: totalSegments }).map((_, i) => (
-          <div
-            key={i}
-            className={`h-full min-w-px flex-1 rounded-full ${i === activeSegmentIndex ? 'bg-gray-50' : 'bg-gray-300'}`}
-          />
-        ))}
-      </div>
+      {showProgress ? (
+        <div className="relative flex h-0.5 w-[10.5rem] items-center gap-0.5">
+          {Array.from({ length: totalSegments }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-full min-w-px flex-1 rounded-full ${i === activeSegmentIndex ? 'bg-gray-50' : 'bg-gray-300'}`}
+            />
+          ))}
+        </div>
+      ) : (
+        <button type="button" onClick={onEmotion} aria-label="공감하기" className="relative size-4">
+          <EmotionIcon className="size-full" />
+        </button>
+      )}
+
+      {comment && (
+        <div className="absolute bottom-2 left-3 flex items-end gap-1">
+          <div className="size-4 shrink-0 overflow-hidden rounded-full bg-white" />
+          <div className="flex max-w-[7.25rem] items-center rounded-full border border-gray-100 bg-gradient-to-b from-gray-50/80 to-gray-50/60 px-2 py-1 backdrop-blur-[6px]">
+            <p className="truncate text-[0.5rem] tracking-[0.01rem] text-gray-700">
+              {comment.text}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
