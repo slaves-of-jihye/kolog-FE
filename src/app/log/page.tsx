@@ -1,6 +1,6 @@
 import { Header } from '@/widgets/header';
 import { GroupLog } from '@/widgets/group-log';
-import { VlogBanner } from './VlogBanner';
+import { VlogBanner } from '@/widgets/vlog-banner';
 
 type SearchParams = Promise<{ date?: string; hours?: string; completed?: string }>;
 
