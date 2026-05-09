@@ -29,7 +29,14 @@ export const LogList = ({ logs }: LogListProps) => {
             tabIndex={0}
             className="cursor-pointer"
             onClick={() => setSelectedIndex(i)}
-            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setSelectedIndex(i)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.preventDefault();
+                setSelectedIndex(i);
+              } else if (e.key === 'Enter') {
+                setSelectedIndex(i);
+              }
+            }}
           >
             <LogCard
               authorName={log.authorName}
