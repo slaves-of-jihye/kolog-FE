@@ -24,6 +24,14 @@ export const LogUpload = () => {
     };
   }, [videoUrl]);
 
+  const handleDownload = () => {
+    if (!videoUrl) return;
+    const a = document.createElement('a');
+    a.href = videoUrl;
+    a.download = `kolog-${Date.now()}.mp4`;
+    a.click();
+  };
+
   const handleUpload = () => {
     // TODO: API 연동
     sessionStorage.removeItem(SESSION_KEY);
@@ -77,7 +85,12 @@ export const LogUpload = () => {
           </div>
 
           <div className="relative flex w-full items-center justify-end">
-            <button type="button" aria-label="저장" className="text-primary-50 size-6">
+            <button
+              type="button"
+              aria-label="저장"
+              onClick={handleDownload}
+              className="text-primary-50 size-6"
+            >
               <DownloadIcon className="stroke-primary-50 size-full" />
             </button>
           </div>
