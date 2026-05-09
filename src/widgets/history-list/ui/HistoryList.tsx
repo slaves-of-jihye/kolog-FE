@@ -1,15 +1,25 @@
+import Link from 'next/link';
 import { LogCard } from '@/shared/ui';
 
 type HistoryEntry = {
   date: string;
+  dateParam?: string;
   log?: { authorName: string; time: string; message: string };
 };
 
 const mockHistory: HistoryEntry[] = [
-  { date: '4월 24일의 기록', log: { authorName: '하린', time: '10:00', message: '집에 가기' } },
-  { date: '4월 25일의 기록', log: { authorName: '하린', time: '10:00', message: '집에 가기' } },
-  { date: '4월 26일의 기록' },
-  { date: '4월 27일의 기록' },
+  {
+    date: '4월 24일의 기록',
+    dateParam: '4/24',
+    log: { authorName: '하린', time: '10:00', message: '집에 가기' },
+  },
+  {
+    date: '4월 25일의 기록',
+    dateParam: '4/25',
+    log: { authorName: '하린', time: '10:00', message: '집에 가기' },
+  },
+  { date: '4월 26일의 기록', dateParam: '4/26' },
+  { date: '4월 27일의 기록', dateParam: '4/27' },
 ];
 
 export const HistoryList = () => {
@@ -28,12 +38,13 @@ export const HistoryList = () => {
                 time={entry.log.time}
                 message={entry.log.message}
               />
-              <button
-                type="button"
+              <Link
+                href={`/log?date=${entry.dateParam}`}
+                aria-label={`${entry.date} 로그 보기`}
                 className="text-left text-[0.625rem] tracking-[0.0125rem] text-gray-500"
               >
                 바로가기 →
-              </button>
+              </Link>
             </>
           ) : (
             <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">
