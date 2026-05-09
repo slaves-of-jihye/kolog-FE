@@ -27,8 +27,7 @@ export const SignupForm = () => {
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     if (passwordError) setPasswordError(validatePassword(value));
-    if (passwordConfirmError)
-      setPasswordConfirmError(validatePasswordConfirm(value, passwordConfirm));
+    if (passwordConfirm) setPasswordConfirmError(validatePasswordConfirm(value, passwordConfirm));
   };
 
   const handlePasswordConfirmChange = (value: string) => {
