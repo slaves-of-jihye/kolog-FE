@@ -43,7 +43,7 @@ export const LogUpload = () => {
 
   return (
     <div className="relative min-h-screen w-full bg-white">
-      <div className="flex flex-col gap-6 px-5 pt-[4.25rem] pb-16">
+      <div className="flex flex-col gap-6 px-5 pt-[calc(4.25rem+env(safe-area-inset-top,0px))] pb-[calc(4rem+env(safe-area-inset-bottom,0px))]">
         {/* 헤더 */}
         <div className="flex h-[1.625rem] items-center gap-6">
           <button type="button" aria-label="뒤로가기" onClick={() => router.back()}>

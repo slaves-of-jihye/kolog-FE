@@ -54,7 +54,7 @@ export const CameraPermissionGuide = ({
         aria-modal="true"
         aria-labelledby="cam-perm-title"
         aria-describedby="cam-perm-desc"
-        className="flex w-full max-w-sm flex-col gap-4 rounded-t-[1.25rem] bg-white p-6"
+        className="flex w-full max-w-sm flex-col gap-4 rounded-t-[1.25rem] bg-white p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto h-1 w-10 rounded-full bg-gray-300" />
