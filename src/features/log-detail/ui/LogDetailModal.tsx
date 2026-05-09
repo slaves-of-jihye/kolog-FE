@@ -37,9 +37,10 @@ export const LogDetailModal = ({
   const [input, setInput] = useState('');
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousOverflow;
     };
   }, []);
 
