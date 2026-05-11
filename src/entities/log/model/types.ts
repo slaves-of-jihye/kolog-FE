@@ -29,3 +29,17 @@ export interface EmotionResponse {
   message: string;
   emotionId: number;
 }
+
+export interface Chat {
+  chatId: number;
+  userId: number;
+  nickname: string;
+  profileImage: string;
+  chatContent: string;
+}
+
+export interface LogChatResponse {
+  status: number;
+  message: string;
+  data: Chat[];
+}
