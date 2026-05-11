@@ -18,3 +18,14 @@ export interface HourlyLogResponse {
   message: string;
   data: Log[];
 }
+
+export interface EmotionRequest {
+  videoId: number;
+  emotionId: number;
+}
+
+export interface EmotionResponse {
+  status: number;
+  message: string;
+  emotionId: number;
+}
