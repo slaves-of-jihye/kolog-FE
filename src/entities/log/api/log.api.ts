@@ -8,6 +8,8 @@ import {
   EmotionResponse,
   HourlyLogResponse,
   LogChatResponse,
+  UpdateCaptionRequest,
+  UpdateCaptionResponse,
 } from '../model/types';
 
 export const logApi = {
@@ -31,6 +33,12 @@ export const logApi = {
   },
   getLogsByDate: async (date: string) => {
     const response = await baseApi.get<DateLogResponse>(`/api/v1/logs/${date}`);
+    return response.data;
+  },
+  patchLogCaption: async ({ logId, caption }: UpdateCaptionRequest) => {
+    const response = await baseApi.patch<UpdateCaptionResponse>(`/api/v1/logs/${logId}/caption`, {
+      caption,
+    });
     return response.data;
   },
 };
@@ -70,5 +78,11 @@ export const useEmotionMutation = () => {
 export const useCreateChatMutation = () => {
   return useMutation({
     mutationFn: (data: CreateChatRequest) => logApi.postLogChat(data),
+  });
+};
+
+export const useUpdateCaptionMutation = () => {
+  return useMutation({
+    mutationFn: (data: UpdateCaptionRequest) => logApi.patchLogCaption(data),
   });
 };

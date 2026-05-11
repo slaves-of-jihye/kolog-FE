@@ -71,3 +71,18 @@ export interface DateLogResponse {
   message: string;
   data: DateLogItem[];
 }
+
+export interface UpdateCaptionRequest {
+  logId: number;
+  caption: string;
+}
+
+export interface UpdateCaptionResponse {
+  status: number;
+  message: string;
+  data: {
+    logId: number;
+    caption: string;
+    updatedAt: string;
+  };
+}
