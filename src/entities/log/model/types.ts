@@ -43,3 +43,15 @@ export interface LogChatResponse {
   message: string;
   data: Chat[];
 }
+
+export interface CreateChatRequest {
+  userId: number;
+  logId: number;
+  chatContent: string;
+}
+
+export interface CreateChatResponse {
+  status: number;
+  message: string;
+  chatContent: string;
+}
