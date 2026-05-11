@@ -3,6 +3,7 @@ import { baseApi } from '@/shared/api/base';
 import {
   CreateChatRequest,
   CreateChatResponse,
+  DateLogResponse,
   EmotionRequest,
   EmotionResponse,
   HourlyLogResponse,
@@ -28,6 +29,10 @@ export const logApi = {
     const response = await baseApi.post<CreateChatResponse>('/api/v1/video/chat', data);
     return response.data;
   },
+  getLogsByDate: async (date: string) => {
+    const response = await baseApi.get<DateLogResponse>(`/api/v1/logs/${date}`);
+    return response.data;
+  },
 };
 
 export const useHourlyLogs = (hour?: number) => {
@@ -44,6 +49,15 @@ export const useLogChats = (logId: number) => {
     queryFn: () => logApi.getLogChats(logId),
     select: (response) => response.data,
     enabled: !!logId,
+  });
+};
+
+export const useLogsByDate = (date: string) => {
+  return useQuery({
+    queryKey: ['logs', 'date', date],
+    queryFn: () => logApi.getLogsByDate(date),
+    select: (response) => response.data,
+    enabled: !!date,
   });
 };
 

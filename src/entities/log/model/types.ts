@@ -55,3 +55,19 @@ export interface CreateChatResponse {
   message: string;
   chatContent: string;
 }
+
+export interface DateLogItem {
+  date: string;
+  hour: number;
+  userId: number;
+  nickname: string;
+  profileImage: string;
+  videoUrl: string;
+  caption: string;
+}
+
+export interface DateLogResponse {
+  status: number;
+  message: string;
+  data: DateLogItem[];
+}
