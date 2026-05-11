@@ -3,16 +3,10 @@
 import { useState } from 'react';
 import { LogCard } from '@/shared/ui';
 import { LogDetailModal } from '@/features/log-detail';
-
-type LogItem = {
-  authorName: string;
-  time: string;
-  message: string;
-  comment?: { authorName: string; text: string };
-};
+import { Log } from '@/entities/log';
 
 type LogListProps = {
-  logs: LogItem[];
+  logs: Log[];
 };
 
 export const LogList = ({ logs }: LogListProps) => {
@@ -24,7 +18,7 @@ export const LogList = ({ logs }: LogListProps) => {
       <div className="flex flex-col gap-2">
         {logs.map((log, i) => (
           <div
-            key={i}
+            key={log.logId || i}
             role="button"
             tabIndex={0}
             className="cursor-pointer"
@@ -39,11 +33,10 @@ export const LogList = ({ logs }: LogListProps) => {
             }}
           >
             <LogCard
-              authorName={log.authorName}
-              time={log.time}
-              message={log.message}
+              authorName={log.user.nickname}
+              time={`${log.hour}:00`}
+              message={log.caption}
               showProgress={false}
-              comment={log.comment}
             />
           </div>
         ))}
@@ -51,9 +44,9 @@ export const LogList = ({ logs }: LogListProps) => {
 
       {selected && (
         <LogDetailModal
-          authorName={selected.authorName}
-          time={selected.time}
-          message={selected.message}
+          authorName={selected.user.nickname}
+          time={`${selected.hour}:00`}
+          message={selected.caption}
           onClose={() => setSelectedIndex(null)}
         />
       )}

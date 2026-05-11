@@ -1,23 +1,16 @@
-import { LogList } from '@/widgets/log-list';
+'use client';
 
-const mockLogs = [
-  { authorName: '하린', time: '10:00', message: '집에 가기' },
-  { authorName: '미수', time: '10:00', message: '여기 어디야' },
-  {
-    authorName: '소리',
-    time: '10:00',
-    message: '같이 놀자',
-    comment: { authorName: '하린', text: '임소리 왜케 귀엽지 진짜' },
-  },
-  { authorName: '하린', time: '10:00', message: '집에 가기' },
-  { authorName: '하린', time: '10:00', message: '집에 가기' },
-];
+import { LogList } from '@/widgets/log-list';
+import { useHourlyLogs } from '@/entities/log';
 
 type GroupLogProps = {
   date?: string;
+  hour?: number;
 };
 
-export const GroupLog = ({ date }: GroupLogProps) => {
+export const GroupLog = ({ date, hour }: GroupLogProps) => {
+  const { data: logs = [] } = useHourlyLogs(hour);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
@@ -34,7 +27,7 @@ export const GroupLog = ({ date }: GroupLogProps) => {
         ))}
       </div>
 
-      <LogList logs={mockLogs} />
+      <LogList logs={logs} />
     </div>
   );
 };

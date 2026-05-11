@@ -5,9 +5,10 @@ import { VlogBanner } from '@/widgets/vlog-banner';
 type SearchParams = Promise<{ date?: string; hours?: string; completed?: string }>;
 
 const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { date, completed } = await searchParams;
+  const { date, hours, completed } = await searchParams;
   const isPastView = Boolean(date);
   const isCompleted = completed === 'true';
+  const hour = hours ? parseInt(hours, 10) : undefined;
 
   return (
     <div className="relative min-h-screen w-full bg-white">
@@ -16,7 +17,7 @@ const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
 
         <div className="flex flex-col gap-3">
           {isPastView && <VlogBanner date={date} isCompleted={isCompleted} />}
-          <GroupLog date={date} />
+          <GroupLog date={date} hour={hour} />
         </div>
       </div>
     </div>
