@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { baseApi } from '@/shared/api/base';
 import {
+  CreateChatRequest,
+  CreateChatResponse,
   EmotionRequest,
   EmotionResponse,
   HourlyLogResponse,
@@ -20,6 +22,10 @@ export const logApi = {
   },
   getLogChats: async (logId: number) => {
     const response = await baseApi.get<LogChatResponse>(`/api/v1/video/${logId}/chat`);
+    return response.data;
+  },
+  postLogChat: async (data: CreateChatRequest) => {
+    const response = await baseApi.post<CreateChatResponse>('/api/v1/video/chat', data);
     return response.data;
   },
 };
@@ -44,5 +50,11 @@ export const useLogChats = (logId: number) => {
 export const useEmotionMutation = () => {
   return useMutation({
     mutationFn: (data: EmotionRequest) => logApi.postEmotion(data),
+  });
+};
+
+export const useCreateChatMutation = () => {
+  return useMutation({
+    mutationFn: (data: CreateChatRequest) => logApi.postLogChat(data),
   });
 };
