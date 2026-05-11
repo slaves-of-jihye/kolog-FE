@@ -12,6 +12,13 @@ import {
   UpdateCaptionResponse,
 } from '../model/types';
 
+const MOCK_ACCESS_TOKEN = 'mock-access-token';
+
+const authHeaders = {
+  Authorization: `Bearer ${MOCK_ACCESS_TOKEN}`,
+  'Content-Type': 'application/json',
+};
+
 export const logApi = {
   getHourlyLogs: async (hour?: number) => {
     const response = await baseApi.get<HourlyLogResponse>('/api/v1/logs/hour', {
@@ -20,7 +27,9 @@ export const logApi = {
     return response.data;
   },
   postEmotion: async (data: EmotionRequest) => {
-    const response = await baseApi.post<EmotionResponse>('/api/v1/video/emotion', data);
+    const response = await baseApi.post<EmotionResponse>('/api/v1/video/emotion', data, {
+      headers: authHeaders,
+    });
     return response.data;
   },
   getLogChats: async (logId: number) => {
@@ -28,7 +37,9 @@ export const logApi = {
     return response.data;
   },
   postLogChat: async (data: CreateChatRequest) => {
-    const response = await baseApi.post<CreateChatResponse>('/api/v1/video/chat', data);
+    const response = await baseApi.post<CreateChatResponse>('/api/v1/video/chat', data, {
+      headers: authHeaders,
+    });
     return response.data;
   },
   getLogsByDate: async (date: string) => {
@@ -36,9 +47,11 @@ export const logApi = {
     return response.data;
   },
   patchLogCaption: async ({ logId, caption }: UpdateCaptionRequest) => {
-    const response = await baseApi.patch<UpdateCaptionResponse>(`/api/v1/logs/${logId}/caption`, {
-      caption,
-    });
+    const response = await baseApi.patch<UpdateCaptionResponse>(
+      `/api/v1/logs/${logId}/caption`,
+      { caption },
+      { headers: authHeaders },
+    );
     return response.data;
   },
 };
