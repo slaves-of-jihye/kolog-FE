@@ -13,6 +13,14 @@ export const LogList = ({ logs }: LogListProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const selected = selectedIndex !== null ? logs[selectedIndex] : null;
 
+  if (logs.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 py-10 text-gray-400">
+        <p className="text-sm">아직 아무도 로그를 업로드하지 않았어요.</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col gap-2">
