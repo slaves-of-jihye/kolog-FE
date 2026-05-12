@@ -3,12 +3,18 @@
 import { useState } from 'react';
 import { FormField } from '@/shared/ui';
 import { validateEmail, validatePassword } from '../model/validators';
+import { useLoginMutation } from '../model/useLoginMutation';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [apiError, setApiError] = useState('');
+
+  const { mutate: login, isPending } = useLoginMutation({
+    onApiError: setApiError,
+  });
 
   const handleEmailChange = (value: string) => {
     setEmail(value);
@@ -22,12 +28,13 @@ export const LoginForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError('');
     const eErr = validateEmail(email);
     const pErr = validatePassword(password);
     setEmailError(eErr);
     setPasswordError(pErr);
     if (eErr || pErr) return;
-    // TODO: API 연동
+    login({ email, password });
   };
 
   return (
@@ -53,12 +60,18 @@ export const LoginForm = () => {
           error={passwordError}
           autoComplete="current-password"
         />
+        {apiError && (
+          <p role="alert" className="text-xs text-red-500">
+            {apiError}
+          </p>
+        )}
       </div>
       <button
         type="submit"
-        className="bg-primary-100 w-full rounded-[0.5rem] px-[0.9375rem] py-1.5 text-[0.75rem] tracking-[0.015rem] text-gray-600"
+        disabled={isPending}
+        className="bg-primary-100 w-full rounded-[0.5rem] px-[0.9375rem] py-1.5 text-[0.75rem] tracking-[0.015rem] text-gray-600 disabled:opacity-50"
       >
-        로그인하기
+        {isPending ? '처리 중...' : '로그인하기'}
       </button>
     </form>
   );
