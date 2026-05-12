@@ -44,6 +44,7 @@ export const LogList = ({ logs }: LogListProps) => {
 
       {selected && (
         <LogDetailModal
+          logId={selected.logId}
           authorName={selected.user.nickname}
           time={`${selected.hour}:00`}
           message={selected.caption}

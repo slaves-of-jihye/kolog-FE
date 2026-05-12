@@ -3,38 +3,25 @@
 import { useEffect, useState } from 'react';
 import { LogCard } from '@/shared/ui';
 import { Profile } from '@/shared/ui';
-
-type Comment = {
-  authorName: string;
-  time: string;
-  text: string;
-};
+import { useLogChats } from '@/entities/log';
 
 type LogDetailModalProps = {
+  logId: number;
   authorName: string;
   time: string;
   message: string;
-  comments?: Comment[];
   onClose: () => void;
 };
 
-const mockComments: Comment[] = [
-  { authorName: '양정우', time: '1시간 전', text: '어쩌라고' },
-  {
-    authorName: '양정우',
-    time: '1시간 전',
-    text: '안녕하세요, 자르면 눈물이 나오는 양파같은 개발자, 양정우 입니다.',
-  },
-];
-
 export const LogDetailModal = ({
+  logId,
   authorName,
   time,
   message,
-  comments = mockComments,
   onClose,
 }: LogDetailModalProps) => {
   const [input, setInput] = useState('');
+  const { data: comments = [] } = useLogChats(logId);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -87,17 +74,18 @@ export const LogDetailModal = ({
         <div className="flex flex-col gap-2">
           {comments.map((comment, i) => (
             <div
-              key={i}
+              key={comment.chatId || i}
               className="flex flex-col gap-2 rounded-[0.5rem] border border-gray-100 bg-white p-2.5"
             >
               <div className="flex items-center gap-1">
                 <Profile className="size-6" border />
                 <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">
-                  {comment.authorName}
+                  {comment.nickname}
                 </p>
-                <p className="text-[0.5rem] tracking-[0.01rem] text-gray-500">{comment.time}</p>
               </div>
-              <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">{comment.text}</p>
+              <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">
+                {comment.chatContent}
+              </p>
             </div>
           ))}
         </div>
