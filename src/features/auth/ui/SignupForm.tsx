@@ -8,6 +8,7 @@ import {
   validatePasswordConfirm,
   validateRequired,
 } from '../model/validators';
+import { useSignupMutation } from '../model/useSignupMutation';
 
 export const SignupForm = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +19,11 @@ export const SignupForm = () => {
   const [passwordError, setPasswordError] = useState('');
   const [passwordConfirmError, setPasswordConfirmError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
+  const [apiError, setApiError] = useState('');
+
+  const { mutate: signup, isPending } = useSignupMutation({
+    onApiError: setApiError,
+  });
 
   const handleEmailChange = (value: string) => {
     setEmail(value);
@@ -40,8 +46,9 @@ export const SignupForm = () => {
     if (nicknameError) setNicknameError(validateRequired(value, '닉네임'));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setApiError('');
     const eErr = validateEmail(email);
     const pErr = validatePassword(password);
     const pcErr = validatePasswordConfirm(password, passwordConfirm);
@@ -51,7 +58,14 @@ export const SignupForm = () => {
     setPasswordConfirmError(pcErr);
     setNicknameError(nErr);
     if (eErr || pErr || pcErr || nErr) return;
-    // TODO: API 연동
+    signup({ email, password, nickname });
+    {
+      apiError && (
+        <p role="alert" className="text-xs text-red-500">
+          {apiError}
+        </p>
+      );
+    }
   };
 
   return (
