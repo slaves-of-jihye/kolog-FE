@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Header } from '@/widgets/header';
 import { GroupLog } from '@/widgets/group-log';
 import { VlogBanner } from '@/widgets/vlog-banner';
@@ -11,9 +12,9 @@ const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { date, hours, completed } = await searchParams;
   const isPastView = Boolean(date);
   const isCompleted = completed === 'true';
-  const hour = hours ? parseInt(hours, 10) : undefined;
+  const hour = hours ? parseInt(hours, 10) : dayjs().hour();
 
-  const formattedDate = date?.replace('/', '-');
+  const formattedDate = date ? date.replace(/"/g, '').replace('/', '-') : dayjs().format('M-D');
   const logs = await logApi.getHourlyLogs(hour, formattedDate);
 
   return (

@@ -1,5 +1,6 @@
 'use client';
 
+import dayjs from 'dayjs';
 import { LogList } from '@/widgets/log-list';
 import { useHourlyLogs, Log } from '@/entities/log';
 
@@ -10,8 +11,9 @@ type GroupLogProps = {
 };
 
 export const GroupLog = ({ date, hour, initialLogs }: GroupLogProps) => {
-  const formattedDate = date?.replace('/', '-');
-  const { data: logs = initialLogs || [] } = useHourlyLogs(hour, formattedDate);
+  const formattedDate = date ? date.replace(/"/g, '').replace('/', '-') : dayjs().format('M-D');
+  const resolvedHour = hour ?? dayjs().hour();
+  const { data: logs = initialLogs || [] } = useHourlyLogs(resolvedHour, formattedDate);
 
   return (
     <div className="flex flex-col gap-2">

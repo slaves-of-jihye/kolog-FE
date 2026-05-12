@@ -23,7 +23,7 @@ export const HistoryList = ({ logs }: HistoryListProps) => {
   return (
     <div className="flex flex-col gap-3">
       {logs.map((log, i) => {
-        const dateParam = log.date.replace('-', '/');
+        const dateParam = log.date.replace(/"/g, '');
         return (
           <div
             key={i}
