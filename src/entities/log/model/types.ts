@@ -1,16 +1,12 @@
-export interface User {
-  id: number;
-  nickname: string;
-  profileImage: string;
-}
-
 export interface Log {
   logId: number;
   videoUrl: string;
   caption: string;
   date: string;
   hour: number;
-  user: User;
+  userId: number;
+  nickname: string;
+  profileImage: string | null;
 }
 
 export interface HourlyLogResponse {

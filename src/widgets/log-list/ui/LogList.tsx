@@ -41,7 +41,7 @@ export const LogList = ({ logs }: LogListProps) => {
             }}
           >
             <LogCard
-              authorName={log.user.nickname}
+              authorName={log.nickname}
               time={`${log.hour}:00`}
               message={log.caption}
               showProgress={false}
@@ -53,7 +53,7 @@ export const LogList = ({ logs }: LogListProps) => {
       {selected && (
         <LogDetailModal
           logId={selected.logId}
-          authorName={selected.user.nickname}
+          authorName={selected.nickname}
           time={`${selected.hour}:00`}
           message={selected.caption}
           onClose={() => setSelectedIndex(null)}
