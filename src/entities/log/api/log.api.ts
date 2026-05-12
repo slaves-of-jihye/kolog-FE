@@ -12,11 +12,12 @@ import {
   UpdateCaptionResponse,
 } from '../model/types';
 
-const MOCK_ACCESS_TOKEN = 'mock-access-token';
-
-const authHeaders = {
-  Authorization: `Bearer ${MOCK_ACCESS_TOKEN}`,
-  'Content-Type': 'application/json',
+const getAuthHeaders = () => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  return {
+    Authorization: `Bearer ${token ?? ''}`,
+    'Content-Type': 'application/json',
+  };
 };
 
 export const logApi = {
@@ -28,7 +29,7 @@ export const logApi = {
   },
   postEmotion: async (data: EmotionRequest) => {
     const response = await baseApi.post<EmotionResponse>('/api/v1/video/emotion', data, {
-      headers: authHeaders,
+      headers: getAuthHeaders(),
     });
     return response.data;
   },
@@ -38,7 +39,7 @@ export const logApi = {
   },
   postLogChat: async (data: CreateChatRequest) => {
     const response = await baseApi.post<CreateChatResponse>('/api/v1/video/chat', data, {
-      headers: authHeaders,
+      headers: getAuthHeaders(),
     });
     return response.data;
   },
@@ -50,7 +51,7 @@ export const logApi = {
     const response = await baseApi.patch<UpdateCaptionResponse>(
       `/api/v1/logs/${logId}/caption`,
       { caption },
-      { headers: authHeaders },
+      { headers: getAuthHeaders() },
     );
     return response.data;
   },
