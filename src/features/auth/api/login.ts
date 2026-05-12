@@ -1,4 +1,5 @@
 import axios from 'axios';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface LoginRequest {
   email: string;
@@ -16,9 +17,6 @@ export interface LoginResponse {
 }
 
 export const loginApi = async (body: LoginRequest): Promise<LoginResponse> => {
-  const { data } = await axios.post<LoginResponse>(
-    'https://kolog-be.parafara.cloud/api/v1/users/login',
-    body,
-  );
+  const { data } = await axios.post<LoginResponse>(`${API_BASE_URL}/api/v1/users/login`, body);
   return data;
 };

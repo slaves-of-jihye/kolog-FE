@@ -1,4 +1,5 @@
 import axios from 'axios';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface SignupRequest {
   email: string;
@@ -20,9 +21,6 @@ export interface SignupResponse {
 }
 
 export const signupApi = async (body: SignupRequest): Promise<SignupResponse> => {
-  const { data } = await axios.post<SignupResponse>(
-    'https://kolog-be.parafara.cloud/api/v1/users/signup',
-    body,
-  );
+  const { data } = await axios.post<SignupResponse>(`${API_BASE_URL}/api/v1/users/signup`, body);
   return data;
 };
