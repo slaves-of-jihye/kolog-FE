@@ -6,13 +6,13 @@ import { logApi } from '@/entities/log';
 
 export const revalidate = 60;
 
-type SearchParams = Promise<{ date?: string; hours?: string; completed?: string }>;
+type SearchParams = Promise<{ date?: string; hour?: string; completed?: string }>;
 
 const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { date, hours, completed } = await searchParams;
+  const { date, hour: hourParam, completed } = await searchParams;
   const isPastView = Boolean(date);
   const isCompleted = completed === 'true';
-  const hour = hours ? parseInt(hours, 10) : dayjs().hour();
+  const hour = hourParam ? parseInt(hourParam, 10) : dayjs().hour();
 
   const formattedDate = date ? date.replace(/"/g, '').replace('/', '-') : dayjs().format('M-D');
   const logs = await logApi.getHourlyLogs(hour, formattedDate);

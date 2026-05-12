@@ -34,7 +34,7 @@ export const HistoryList = ({ logs }: HistoryListProps) => {
             </p>
             <LogCard authorName={log.nickname} time={`${log.hour}:00`} message={log.caption} />
             <Link
-              href={`/log?date=${dateParam}`}
+              href={`/log?date=${dateParam}&hour=${log.hour}`}
               aria-label={`${log.date} 로그 보기`}
               className="text-left text-[0.625rem] tracking-[0.0125rem] text-gray-500"
             >
