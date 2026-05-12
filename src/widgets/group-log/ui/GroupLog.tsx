@@ -1,15 +1,17 @@
 'use client';
 
 import { LogList } from '@/widgets/log-list';
-import { useHourlyLogs } from '@/entities/log';
+import { useHourlyLogs, Log } from '@/entities/log';
 
 type GroupLogProps = {
   date?: string;
   hour?: number;
+  initialLogs?: Log[];
 };
 
-export const GroupLog = ({ date, hour }: GroupLogProps) => {
-  const { data: logs = [] } = useHourlyLogs(hour);
+export const GroupLog = ({ date, hour, initialLogs }: GroupLogProps) => {
+  const formattedDate = date?.replace('/', '-');
+  const { data: logs = initialLogs || [] } = useHourlyLogs(hour, formattedDate);
 
   return (
     <div className="flex flex-col gap-2">

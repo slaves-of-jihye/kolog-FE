@@ -20,9 +20,9 @@ const authHeaders = {
 };
 
 export const logApi = {
-  getHourlyLogs: async (hour?: number) => {
+  getHourlyLogs: async (hour?: number, date?: string) => {
     const response = await baseApi.get<HourlyLogResponse>('/api/v1/logs/hour', {
-      params: { hour },
+      params: { hour, date },
     });
     return response.data;
   },
@@ -56,10 +56,10 @@ export const logApi = {
   },
 };
 
-export const useHourlyLogs = (hour?: number) => {
+export const useHourlyLogs = (hour?: number, date?: string) => {
   return useQuery({
-    queryKey: ['logs', 'hour', hour],
-    queryFn: () => logApi.getHourlyLogs(hour),
+    queryKey: ['logs', 'hour', hour, date],
+    queryFn: () => logApi.getHourlyLogs(hour, date),
     select: (response) => response.data,
   });
 };
