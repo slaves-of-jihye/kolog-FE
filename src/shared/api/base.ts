@@ -13,7 +13,7 @@ baseApi.interceptors.request.use(
   (config) => {
     // FormData일 때는 Content-Type을 삭제하여 브라우저가 자동으로 설정하도록 함
     if (config.data instanceof FormData) {
-      delete config.headers['Content-Type'];
+      config.headers.delete('Content-Type');
     }
     return config;
   },

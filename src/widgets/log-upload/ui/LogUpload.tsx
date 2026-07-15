@@ -63,6 +63,7 @@ export const LogUpload = () => {
 
       sessionStorage.removeItem(SESSION_KEY);
       sessionStorage.removeItem('uploadVideoMimeType');
+      URL.revokeObjectURL(videoUrl);
       router.push('/');
       alert('로그가 성공적으로 업로드되었습니다!');
     } catch (error) {
