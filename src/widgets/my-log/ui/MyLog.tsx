@@ -26,11 +26,11 @@ export const MyLog = () => {
     router.push('/log/upload');
   }, [state, blob, router]);
 
-  useEffect(() => {
-    return () => {
-      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+  //   };
+  // }, []);
 
   return (
     <>

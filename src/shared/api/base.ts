@@ -8,9 +8,13 @@ export const baseApi = axios.create({
   withCredentials: true,
 });
 
-// 인터셉터 설정 (필요 시 추후 확장)
+// 인터셉터 설정
 baseApi.interceptors.request.use(
   (config) => {
+    // FormData일 때는 Content-Type을 삭제하여 브라우저가 자동으로 설정하도록 함
+    if (config.data instanceof FormData) {
+      config.headers.delete('Content-Type');
+    }
     return config;
   },
   (error) => {
