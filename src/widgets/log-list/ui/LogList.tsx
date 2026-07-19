@@ -3,28 +3,30 @@
 import { useState } from 'react';
 import { LogCard } from '@/shared/ui';
 import { LogDetailModal } from '@/features/log-detail';
-
-type LogItem = {
-  authorName: string;
-  time: string;
-  message: string;
-  comment?: { authorName: string; text: string };
-};
+import { Log } from '@/entities/log';
 
 type LogListProps = {
-  logs: LogItem[];
+  logs: Log[];
 };
 
 export const LogList = ({ logs }: LogListProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const selected = selectedIndex !== null ? logs[selectedIndex] : null;
 
+  if (logs.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 py-10 text-gray-400">
+        <p className="text-sm">아직 아무도 로그를 업로드하지 않았어요.</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col gap-2">
         {logs.map((log, i) => (
           <div
-            key={i}
+            key={log.logId ?? i}
             role="button"
             tabIndex={0}
             className="cursor-pointer"
@@ -39,11 +41,10 @@ export const LogList = ({ logs }: LogListProps) => {
             }}
           >
             <LogCard
-              authorName={log.authorName}
-              time={log.time}
-              message={log.message}
+              authorName={log.nickname}
+              time={`${log.hour}:00`}
+              message={log.caption}
               showProgress={false}
-              comment={log.comment}
             />
           </div>
         ))}
@@ -51,9 +52,10 @@ export const LogList = ({ logs }: LogListProps) => {
 
       {selected && (
         <LogDetailModal
-          authorName={selected.authorName}
-          time={selected.time}
-          message={selected.message}
+          logId={selected.logId}
+          authorName={selected.nickname}
+          time={`${selected.hour}:00`}
+          message={selected.caption}
           onClose={() => setSelectedIndex(null)}
         />
       )}

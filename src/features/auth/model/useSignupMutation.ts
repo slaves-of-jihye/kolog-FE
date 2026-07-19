@@ -23,6 +23,7 @@ export const useSignupMutation = ({ onApiError }: UseSignupMutationOptions) => {
     onSuccess: ({ data }) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem('userId', String(data.user.id));
       router.push('/');
     },
     onError: (error: unknown) => {
