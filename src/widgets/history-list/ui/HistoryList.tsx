@@ -22,11 +22,11 @@ export const HistoryList = ({ logs }: HistoryListProps) => {
 
   return (
     <div className="flex flex-col gap-3">
-      {logs.map((log, i) => {
+      {logs.map((log) => {
         const dateParam = log.date.replace(/"/g, '');
         return (
           <div
-            key={i}
+            key={`${log.date}-${log.hour}-${log.userId}`}
             className="flex flex-col gap-2 overflow-hidden rounded-[0.5rem] bg-gray-100 p-4"
           >
             <p className="text-[0.875rem] font-bold text-gray-800">
