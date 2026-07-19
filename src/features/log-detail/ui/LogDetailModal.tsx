@@ -32,6 +32,7 @@ export const LogDetailModal = ({
 
     const storedUserId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
     const userId = storedUserId ? parseInt(storedUserId, 10) : 0;
+    if (!userId) return;
 
     createChat(
       { userId, logId, chatContent },
