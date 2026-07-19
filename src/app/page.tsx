@@ -5,6 +5,8 @@ import { LogCard, Profile } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { MyLog } from '@/widgets/my-log';
 
+export const dynamic = 'force-dynamic';
+
 const Main = () => {
   const today = dayjs().format('M-D');
   const currentHour = dayjs().hour();
