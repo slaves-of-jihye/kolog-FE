@@ -8,6 +8,14 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'kolog-be.parafara.cloud',
+      },
+    ],
+  },
   turbopack: {
     rules: {
       '*.svg': {

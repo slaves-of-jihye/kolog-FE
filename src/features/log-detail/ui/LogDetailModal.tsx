@@ -105,7 +105,12 @@ export const LogDetailModal = ({
               className="flex flex-col gap-2 rounded-[0.5rem] border border-gray-100 bg-white p-2.5"
             >
               <div className="flex items-center gap-1">
-                <Profile className="size-6" border />
+                <Profile
+                  className="size-6"
+                  border
+                  src={comment.profileImage}
+                  alt={comment.nickname}
+                />
                 <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">
                   {comment.nickname}
                 </p>
