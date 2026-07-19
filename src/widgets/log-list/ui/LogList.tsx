@@ -26,7 +26,7 @@ export const LogList = ({ logs }: LogListProps) => {
       <div className="flex flex-col gap-2">
         {logs.map((log, i) => (
           <div
-            key={log.logId || i}
+            key={log.logId ?? i}
             role="button"
             tabIndex={0}
             className="cursor-pointer"
