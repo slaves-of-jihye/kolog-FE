@@ -11,6 +11,23 @@ const ERROR_MESSAGES: Record<number, string> = {
   500: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
 };
 
+// JWT 토큰 디코딩 (간단한 base64 디코딩)
+const decodeJwt = (token: string) => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join(''),
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+};
+
 interface UseLoginMutationOptions {
   onApiError: (message: string) => void;
 }
@@ -20,9 +37,58 @@ export const useLoginMutation = ({ onApiError }: UseLoginMutationOptions) => {
 
   return useMutation({
     mutationFn: (body: LoginRequest) => loginApi(body),
-    onSuccess: ({ data }) => {
+    onSuccess: async ({ data }) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
+
+      // JWT 토큰에서 userId 추출
+      const payload = decodeJwt(data.accessToken);
+      if (payload && payload.sub) {
+        localStorage.setItem('userId', payload.sub);
+      }
+
+      // 사용자의 최근 로그를 조회하여 nickname 가져오기
+      try {
+        const today = new Date();
+        const userId = Number(payload?.sub);
+
+        // 최근 7일간의 로그를 확인하여 닉네임 찾기
+        for (let i = 0; i < 7; i++) {
+          const checkDate = new Date(today);
+          checkDate.setDate(checkDate.getDate() - i);
+          const date = `${checkDate.getMonth() + 1}-${checkDate.getDate()}`;
+
+          try {
+            const response = await axios.get(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/v1/logs/${date}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${data.accessToken}`,
+                },
+              },
+            );
+            const logs = response.data?.data || [];
+
+            // 이 날짜의 로그에서 사용자의 로그 찾기
+            for (const hourLog of logs) {
+              const myLog = hourLog.logs?.find(
+                (log: { userId: number; nickname?: string }) => log.userId === userId,
+              );
+              if (myLog?.nickname) {
+                localStorage.setItem('nickname', myLog.nickname);
+                return; // 닉네임을 찾았으면 종료
+              }
+            }
+          } catch {
+            // 해당 날짜에 로그가 없으면 다음 날짜 확인
+            continue;
+          }
+        }
+      } catch (e) {
+        // nickname 조회 실패해도 로그인은 성공
+        console.error('Failed to fetch user nickname:', e);
+      }
+
       router.push('/');
     },
     onError: (error: unknown) => {

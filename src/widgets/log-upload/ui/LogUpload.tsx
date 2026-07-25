@@ -7,11 +7,13 @@ import DownloadIcon from '@/shared/assets/icons/download.svg';
 import NavArrowLeft from '@/shared/assets/icons/nav-arrow-left.svg';
 import { Profile } from '@/shared/ui';
 import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
+import { useCurrentUser } from '@/shared/hooks/useCurrentUser';
 
 const SESSION_KEY = 'uploadVideoUrl';
 
 export const LogUpload = () => {
   const router = useRouter();
+  const { nickname } = useCurrentUser();
   // lazy initializer로 SSR 안전하게 sessionStorage 읽기
   const [caption, setCaption] = useState('집에 가기');
   const [isLoading, setIsLoading] = useState(false);
@@ -105,13 +107,17 @@ export const LogUpload = () => {
           <div className="relative flex w-full items-center justify-between">
             <div className="flex items-center gap-1">
               <Profile className="size-4" />
-              <p className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white">하린</p>
+              <p className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white">
+                {nickname ?? '사용자'}
+              </p>
             </div>
             <MoreVertical className="size-4 fill-white" />
           </div>
 
           <div className="text-primary-50 relative flex flex-col items-center text-center">
-            <p className="font-display text-[2rem] leading-[0.9] whitespace-nowrap">10:00</p>
+            <p className="font-display text-[2rem] leading-[0.9] whitespace-nowrap">
+              {new Date().getHours()}:00
+            </p>
             <input
               type="text"
               value={caption}

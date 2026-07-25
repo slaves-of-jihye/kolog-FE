@@ -46,7 +46,7 @@ export const SignupForm = () => {
     if (nicknameError) setNicknameError(validateRequired(value, '닉네임'));
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setApiError('');
     const eErr = validateEmail(email);
@@ -59,13 +59,6 @@ export const SignupForm = () => {
     setNicknameError(nErr);
     if (eErr || pErr || pcErr || nErr) return;
     signup({ email, password, nickname });
-    {
-      apiError && (
-        <p role="alert" className="text-xs text-red-500">
-          {apiError}
-        </p>
-      );
-    }
   };
 
   return (
@@ -109,12 +102,18 @@ export const SignupForm = () => {
           onChange={handleNicknameChange}
           error={nicknameError}
         />
+        {apiError && (
+          <p role="alert" className="text-xs text-red-500">
+            {apiError}
+          </p>
+        )}
       </div>
       <button
         type="submit"
-        className="bg-primary-100 w-full rounded-[0.5rem] px-[0.9375rem] py-1.5 text-[0.75rem] tracking-[0.015rem] text-gray-600"
+        disabled={isPending}
+        className="bg-primary-100 w-full rounded-[0.5rem] px-[0.9375rem] py-1.5 text-[0.75rem] tracking-[0.015rem] text-gray-600 disabled:opacity-50"
       >
-        회원가입하기
+        {isPending ? '처리 중...' : '회원가입하기'}
       </button>
     </form>
   );

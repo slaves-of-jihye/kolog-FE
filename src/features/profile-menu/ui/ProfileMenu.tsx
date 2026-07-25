@@ -5,15 +5,23 @@ import { useState } from 'react';
 import { LogOut, Pencil } from 'lucide-react';
 import { Profile } from '@/shared/ui';
 import { ProfileEditModal } from './ProfileEditModal';
+import { useCurrentUser } from '@/shared/hooks/useCurrentUser';
 
 type ProfileMenuProps = {
   name?: string;
   onLogout?: () => void;
 };
 
-export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) => {
+export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const { nickname } = useCurrentUser();
+  // TODO: 백엔드 프로필 조회 API 403 이슈 해결 후 활성화
+  // const { data: profile } = useUserProfile();
+  // const displayName = name ?? profile?.data?.nickname ?? nickname ?? '사용자';
+  // const profileImage = profile?.data?.profileImage;
+  const displayName = name ?? nickname ?? '사용자';
+  const profileImage = undefined; // 임시로 비활성화
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -35,7 +43,7 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
         aria-controls="profile-menu"
         aria-label="프로필 메뉴 열기"
       >
-        <Profile className="size-8" border />
+        <Profile className="size-8" border src={profileImage} alt={displayName} />
       </button>
 
       {isMenuOpen && (
@@ -56,9 +64,9 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
             <div className="relative flex flex-col gap-1.5">
               {/* profile row */}
               <div className="flex items-center gap-1.5">
-                <Profile className="size-6" />
+                <Profile className="size-6" src={profileImage} alt={displayName} />
                 <span className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600">
-                  {name}
+                  {displayName}
                 </span>
               </div>
 
@@ -97,7 +105,9 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
         </>
       )}
 
-      {isEditOpen && <ProfileEditModal initialName={name} onClose={() => setIsEditOpen(false)} />}
+      {isEditOpen && (
+        <ProfileEditModal initialName={displayName} onClose={() => setIsEditOpen(false)} />
+      )}
     </div>
   );
 };

@@ -20,11 +20,11 @@ export const useSignupMutation = ({ onApiError }: UseSignupMutationOptions) => {
 
   return useMutation({
     mutationFn: (body: SignupRequest) => signupApi(body),
-    onSuccess: ({ data }) => {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('userId', String(data.user.id));
-      router.push('/');
+    onSuccess: ({ data }, variables) => {
+      // 회원가입 성공 시 userId와 nickname 저장하고 로그인 페이지로 이동
+      localStorage.setItem('userId', String(data.id));
+      localStorage.setItem('nickname', variables.nickname);
+      router.push('/login');
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {

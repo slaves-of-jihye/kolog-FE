@@ -7,6 +7,8 @@ import {
   EmotionRequest,
   EmotionResponse,
   HourlyLogResponse,
+  HourListResponse,
+  Log,
   LogChatResponse,
   UpdateCaptionRequest,
   UpdateCaptionResponse,
@@ -55,13 +57,17 @@ export const logApi = {
     );
     return response.data;
   },
+  getAvailableHours: async () => {
+    const response = await baseApi.get<HourListResponse>('/api/v1/logs/hours');
+    return response.data;
+  },
 };
 
 export const useHourlyLogs = (hour?: number, date?: string) => {
   return useQuery({
     queryKey: ['logs', 'hour', hour, date],
     queryFn: () => logApi.getHourlyLogs(hour, date),
-    select: (response) => response.data,
+    select: (response) => response.data.logs as Log[],
   });
 };
 
@@ -98,5 +104,13 @@ export const useCreateChatMutation = () => {
 export const useUpdateCaptionMutation = () => {
   return useMutation({
     mutationFn: (data: UpdateCaptionRequest) => logApi.patchLogCaption(data),
+  });
+};
+
+export const useAvailableHours = () => {
+  return useQuery({
+    queryKey: ['logs', 'hours'],
+    queryFn: () => logApi.getAvailableHours(),
+    select: (response) => response.data,
   });
 };

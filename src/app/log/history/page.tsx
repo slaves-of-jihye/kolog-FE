@@ -2,12 +2,10 @@
 
 import { Header } from '@/widgets/header';
 import { HistoryList } from '@/widgets/history-list';
-import { useLogsByDate } from '@/entities/log';
-import dayjs from 'dayjs';
+import { useAvailableHours } from '@/entities/log';
 
 const History = () => {
-  const today = dayjs().format('M-D');
-  const { data: logs, isLoading } = useLogsByDate(today);
+  const { data: availableHours, isLoading } = useAvailableHours();
 
   return (
     <div className="relative min-h-screen w-full bg-white">
@@ -20,7 +18,7 @@ const History = () => {
             </p>
           </div>
         ) : (
-          <HistoryList logs={logs} />
+          <HistoryList dateHours={availableHours} />
         )}
       </div>
     </div>

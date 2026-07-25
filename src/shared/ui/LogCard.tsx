@@ -10,6 +10,7 @@ type LogCardProps = {
   authorName: string;
   time: string;
   message: string;
+  videoUrl?: string;
   totalSegments?: number;
   activeSegmentIndex?: number;
   showProgress?: boolean;
@@ -24,6 +25,7 @@ const LogCard = ({
   authorName,
   time,
   message,
+  videoUrl,
   totalSegments = 7,
   activeSegmentIndex = 6,
   showProgress = true,
@@ -35,7 +37,18 @@ const LogCard = ({
 }: LogCardProps) => {
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">
-      <div className="absolute inset-0 rounded-[0.625rem] bg-gray-300" />
+      {videoUrl ? (
+        <video
+          src={videoUrl}
+          autoPlay
+          muted
+          playsInline
+          loop
+          className="absolute inset-0 h-full w-full rounded-[0.625rem] object-cover"
+        />
+      ) : (
+        <div className="absolute inset-0 rounded-[0.625rem] bg-gray-300" />
+      )}
       <div className="absolute inset-0 rounded-[0.625rem] bg-black/10" />
 
       <div className="relative flex w-full items-center justify-between">

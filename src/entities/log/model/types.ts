@@ -12,12 +12,15 @@ export interface Log {
 export interface HourlyLogResponse {
   status: number;
   message: string;
-  data: Log[];
+  data: {
+    hours: number[];
+    logs: Log[];
+  };
 }
 
 export interface EmotionRequest {
-  videoId: number;
-  emotionId: number;
+  logId: number;
+  emotionId: string;
 }
 
 export interface EmotionResponse {
@@ -41,7 +44,6 @@ export interface LogChatResponse {
 }
 
 export interface CreateChatRequest {
-  userId: number;
   logId: number;
   chatContent: string;
 }
@@ -81,4 +83,15 @@ export interface UpdateCaptionResponse {
     caption: string;
     updatedAt: string;
   };
+}
+
+export interface HourListItem {
+  date: string;
+  hours: number[];
+}
+
+export interface HourListResponse {
+  status: number;
+  message: string;
+  data: HourListItem[];
 }

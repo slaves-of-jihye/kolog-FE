@@ -1,9 +1,22 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ProfileMenu } from '@/features/profile-menu';
 import ArchiveIcon from '@/shared/assets/icons/archive.svg';
 
 export const Header = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('nickname');
+    router.push('/login');
+  };
+
   return (
     <div className="flex items-center justify-between">
       <Link href="/">
@@ -13,7 +26,7 @@ export const Header = () => {
         <Link href="/log/history" aria-label="보관함">
           <ArchiveIcon className="h-8 w-[2.125rem] shrink-0" />
         </Link>
-        <ProfileMenu />
+        <ProfileMenu onLogout={handleLogout} />
       </div>
     </div>
   );
