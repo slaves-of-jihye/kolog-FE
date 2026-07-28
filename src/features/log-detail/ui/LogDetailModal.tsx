@@ -110,27 +110,34 @@ export const LogDetailModal = ({
 
         {/* 댓글 목록 */}
         <div className="flex flex-col gap-2">
-          {comments.map((comment, i) => (
-            <div
-              key={comment.chatId || i}
-              className="flex flex-col gap-2 rounded-[0.5rem] border border-gray-100 bg-white p-2.5"
-            >
-              <div className="flex items-center gap-1">
-                <Profile
-                  className="size-6"
-                  border
-                  src={comment.profileImage}
-                  alt={comment.nickname}
-                />
-                <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">
-                  {comment.nickname}
+          {comments.map((comment, i) => {
+            // profileImage localhost를 배포 도메인으로 변환
+            const fixedProfileImage = comment.profileImage
+              ?.replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
+              .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '');
+
+            return (
+              <div
+                key={comment.chatId || i}
+                className="flex flex-col gap-2 rounded-[0.5rem] border border-gray-100 bg-white p-2.5"
+              >
+                <div className="flex items-center gap-1">
+                  <Profile
+                    className="size-6"
+                    border
+                    src={fixedProfileImage}
+                    alt={comment.nickname}
+                  />
+                  <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">
+                    {comment.nickname}
+                  </p>
+                </div>
+                <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">
+                  {comment.chatContent}
                 </p>
               </div>
-              <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-600">
-                {comment.chatContent}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

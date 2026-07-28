@@ -1,5 +1,6 @@
 import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
 import EmotionIcon from '@/shared/assets/icons/emotion-icon.svg';
+import { Profile } from './Profile';
 
 type LogComment = {
   authorName: string;
@@ -11,13 +12,14 @@ type LogCardProps = {
   time: string;
   message: string;
   videoUrl?: string;
+  profileImageUrl?: string;
   totalSegments?: number;
   activeSegmentIndex?: number;
   showProgress?: boolean;
   showUploadCta?: boolean;
   uploadCtaLabel?: string;
   onUploadCtaClick?: () => void;
-  onEmotion?: () => void;
+  onEmotion?: (e?: React.MouseEvent) => void;
   comment?: LogComment;
 };
 
@@ -26,6 +28,7 @@ const LogCard = ({
   time,
   message,
   videoUrl,
+  profileImageUrl,
   totalSegments = 7,
   activeSegmentIndex = 6,
   showProgress = true,
@@ -35,11 +38,30 @@ const LogCard = ({
   onEmotion,
   comment,
 }: LogCardProps) => {
+  // videoUrl localhost를 배포 도메인으로 변환
+  const fixedVideoUrl = videoUrl
+    ?.replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
+    .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '');
+
+  // profileImageUrl localhost를 배포 도메인으로 변환
+  const fixedProfileImageUrl = profileImageUrl
+    ?.replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
+    .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '');
+
+  // 디버깅: 프로필 이미지 URL 확인
+  if (profileImageUrl) {
+    console.log('📸 LogCard Profile:', {
+      authorName,
+      profileImageUrl,
+      fixedProfileImageUrl,
+    });
+  }
+
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">
-      {videoUrl ? (
+      {fixedVideoUrl ? (
         <video
-          src={videoUrl}
+          src={fixedVideoUrl}
           autoPlay
           muted
           playsInline
@@ -53,8 +75,11 @@ const LogCard = ({
 
       <div className="relative flex w-full items-center justify-between">
         <div className="flex items-center gap-1">
-          <div className="size-4 shrink-0 rounded-full bg-white" />
-          <p className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white">
+          <Profile className="size-4" src={fixedProfileImageUrl} alt={authorName} border={false} />
+          <p
+            className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white"
+            suppressHydrationWarning
+          >
             {authorName}
           </p>
         </div>

@@ -3,17 +3,17 @@
 import { useEffect } from 'react';
 
 type EmotionPickerModalProps = {
-  onSelect: (emotionId: string) => void;
+  onSelect: (emotionId: number) => void;
   onClose: () => void;
 };
 
 const EMOTIONS = [
-  { id: 'heart', emoji: '❤️', label: '좋아요' },
-  { id: 'laugh', emoji: '😂', label: '웃겨요' },
-  { id: 'wow', emoji: '😮', label: '놀라워요' },
-  { id: 'sad', emoji: '😢', label: '슬퍼요' },
-  { id: 'angry', emoji: '😡', label: '화나요' },
-  { id: 'thinking', emoji: '🤔', label: '생각중' },
+  { id: 1, emoji: '❤️', label: '좋아요' },
+  { id: 2, emoji: '😂', label: '웃겨요' },
+  { id: 3, emoji: '😮', label: '놀라워요' },
+  { id: 4, emoji: '😢', label: '슬퍼요' },
+  { id: 5, emoji: '😡', label: '화나요' },
+  { id: 6, emoji: '🤔', label: '생각중' },
 ];
 
 export const EmotionPickerModal = ({ onSelect, onClose }: EmotionPickerModalProps) => {

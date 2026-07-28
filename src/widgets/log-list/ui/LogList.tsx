@@ -48,9 +48,10 @@ export const LogList = ({ logs }: LogListProps) => {
               time={`${log.hour}:00`}
               message={log.caption}
               videoUrl={log.videoUrl}
+              profileImageUrl={log.profileImage || undefined}
               showProgress={false}
               onEmotion={(e) => {
-                e.stopPropagation();
+                e?.stopPropagation();
                 setEmotionPickerLogId(log.logId);
               }}
             />

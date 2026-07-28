@@ -14,6 +14,9 @@ export const Header = () => {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('nickname');
+    localStorage.removeItem('profileImage');
+    // storage 이벤트 발생
+    window.dispatchEvent(new Event('storage'));
     router.push('/login');
   };
 

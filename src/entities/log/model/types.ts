@@ -20,7 +20,7 @@ export interface HourlyLogResponse {
 
 export interface EmotionRequest {
   logId: number;
-  emotionId: string;
+  emotionId: number;
 }
 
 export interface EmotionResponse {

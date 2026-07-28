@@ -50,6 +50,7 @@ export const MyLog = () => {
           time={myLog ? `${myLog.hour}:00` : `${currentHour}:00`}
           message={myLog?.caption || ''}
           videoUrl={myLog?.videoUrl}
+          profileImageUrl={myLog?.profileImage || undefined}
           showUploadCta={!myLog}
           onUploadCtaClick={myLog ? undefined : openCamera}
         />

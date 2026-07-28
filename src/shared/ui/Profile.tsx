@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 type ProfileProps = {
   className?: string;
   border?: boolean;
@@ -8,7 +6,7 @@ type ProfileProps = {
   alt?: string;
 };
 
-const Profile = ({
+export const Profile = ({
   className = '',
   border = false,
   thick = false,
@@ -25,7 +23,17 @@ const Profile = ({
     <div
       className={`relative shrink-0 overflow-hidden rounded-full bg-gray-200 ${borderClass} ${className}`.trim()}
     >
-      {src && <Image src={src} alt={alt} fill className="object-cover" />}
+      {src && (
+        <img
+          src={src}
+          alt={alt}
+          className="absolute inset-0 h-full w-full object-cover"
+          onError={(e) => {
+            // 이미지 로드 실패 시 숨김 처리
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      )}
     </div>
   );
 };

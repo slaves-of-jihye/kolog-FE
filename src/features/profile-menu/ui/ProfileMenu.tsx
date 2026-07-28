@@ -15,13 +15,17 @@ type ProfileMenuProps = {
 export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { nickname } = useCurrentUser();
+  const { nickname, profileImage: userProfileImage } = useCurrentUser();
   // TODO: 백엔드 프로필 조회 API 403 이슈 해결 후 활성화
   // const { data: profile } = useUserProfile();
   // const displayName = name ?? profile?.data?.nickname ?? nickname ?? '사용자';
-  // const profileImage = profile?.data?.profileImage;
+  // const profileImage = profile?.data?.profileImage ?? userProfileImage;
   const displayName = name ?? nickname ?? '사용자';
-  const profileImage = undefined; // 임시로 비활성화
+  const profileImage = userProfileImage
+    ? userProfileImage
+        .replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
+        .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '')
+    : undefined;
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -65,7 +69,10 @@ export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
               {/* profile row */}
               <div className="flex items-center gap-1.5">
                 <Profile className="size-6" src={profileImage} alt={displayName} />
-                <span className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600">
+                <span
+                  className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600"
+                  suppressHydrationWarning
+                >
                   {displayName}
                 </span>
               </div>
