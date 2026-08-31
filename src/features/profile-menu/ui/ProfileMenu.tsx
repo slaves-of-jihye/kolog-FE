@@ -37,6 +37,7 @@ export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
         aria-expanded={isMenuOpen}
         aria-controls="profile-menu"
         aria-label="프로필 메뉴 열기"
+        suppressHydrationWarning
       >
         <Profile className="size-8" border src={profileImage} alt={displayName} />
       </button>
@@ -58,7 +59,7 @@ export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
 
             <div className="relative flex flex-col gap-1.5">
               {/* profile row */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5" suppressHydrationWarning>
                 <Profile className="size-6" src={profileImage} alt={displayName} />
                 <span
                   className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600"
