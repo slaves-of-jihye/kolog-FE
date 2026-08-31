@@ -11,11 +11,11 @@ import {
 } from '@/features/video-record';
 import { LogCard } from '@/shared/ui';
 import { useHourlyLogs } from '@/entities/log';
-import { useCurrentUser } from '@/shared/hooks/useCurrentUser';
+import { useProfile } from '@/entities/user';
 
 export const MyLog = () => {
   const router = useRouter();
-  const { nickname, userId } = useCurrentUser();
+  const { nickname, userId, profileImage } = useProfile();
   const currentHour = dayjs().hour();
   const currentDate = dayjs().format('M-D');
   const { data: logs = [] } = useHourlyLogs(currentHour, currentDate);
@@ -46,11 +46,11 @@ export const MyLog = () => {
       <div className="flex flex-col gap-2">
         <p className="text-base font-bold text-gray-800">내가 올린 로그</p>
         <LogCard
-          authorName={myLog?.nickname || nickname || '사용자'}
+          authorName={myLog?.nickname || nickname}
           time={myLog ? `${myLog.hour}:00` : `${currentHour}:00`}
           message={myLog?.caption || ''}
           videoUrl={myLog?.videoUrl}
-          profileImageUrl={myLog?.profileImage || undefined}
+          profileImageUrl={myLog?.profileImage || profileImage}
           showUploadCta={!myLog}
           onUploadCtaClick={myLog ? undefined : openCamera}
         />

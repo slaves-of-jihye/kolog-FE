@@ -3,18 +3,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { ProfileMenu } from '@/features/profile-menu';
 import ArchiveIcon from '@/shared/assets/icons/archive.svg';
 
 export const Header = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleLogout = () => {
+    // localStorage 초기화
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('nickname');
     localStorage.removeItem('profileImage');
+    // React Query 캐시 초기화
+    queryClient.clear();
     // storage 이벤트 발생
     window.dispatchEvent(new Event('storage'));
     router.push('/login');

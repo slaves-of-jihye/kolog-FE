@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { LogOut, Pencil } from 'lucide-react';
 import { Profile } from '@/shared/ui';
 import { ProfileEditModal } from './ProfileEditModal';
-import { useCurrentUser } from '@/shared/hooks/useCurrentUser';
+import { useProfile } from '@/entities/user';
 
 type ProfileMenuProps = {
   name?: string;
@@ -15,17 +15,8 @@ type ProfileMenuProps = {
 export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { nickname, profileImage: userProfileImage } = useCurrentUser();
-  // TODO: 백엔드 프로필 조회 API 403 이슈 해결 후 활성화
-  // const { data: profile } = useUserProfile();
-  // const displayName = name ?? profile?.data?.nickname ?? nickname ?? '사용자';
-  // const profileImage = profile?.data?.profileImage ?? userProfileImage;
-  const displayName = name ?? nickname ?? '사용자';
-  const profileImage = userProfileImage
-    ? userProfileImage
-        .replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
-        .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '')
-    : undefined;
+  const { nickname, profileImage } = useProfile();
+  const displayName = name ?? nickname;
 
   useEffect(() => {
     if (!isMenuOpen) return;

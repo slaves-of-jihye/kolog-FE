@@ -66,6 +66,7 @@ export const LogList = ({ logs }: LogListProps) => {
           time={`${selected.hour}:00`}
           message={selected.caption}
           videoUrl={selected.videoUrl}
+          profileImageUrl={selected.profileImage || undefined}
           onClose={() => setSelectedIndex(null)}
         />
       )}

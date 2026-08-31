@@ -1,6 +1,7 @@
 import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
 import EmotionIcon from '@/shared/assets/icons/emotion-icon.svg';
 import { Profile } from './Profile';
+import { fixLocalhost } from '@/shared/lib/url';
 
 type LogComment = {
   authorName: string;
@@ -38,24 +39,8 @@ const LogCard = ({
   onEmotion,
   comment,
 }: LogCardProps) => {
-  // videoUrl localhost를 배포 도메인으로 변환
-  const fixedVideoUrl = videoUrl
-    ?.replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
-    .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '');
-
-  // profileImageUrl localhost를 배포 도메인으로 변환
-  const fixedProfileImageUrl = profileImageUrl
-    ?.replace('http://localhost:8001', process.env.NEXT_PUBLIC_API_URL || '')
-    .replace('http://localhost:8080', process.env.NEXT_PUBLIC_API_URL || '');
-
-  // 디버깅: 프로필 이미지 URL 확인
-  if (profileImageUrl) {
-    console.log('📸 LogCard Profile:', {
-      authorName,
-      profileImageUrl,
-      fixedProfileImageUrl,
-    });
-  }
+  const fixedVideoUrl = fixLocalhost(videoUrl);
+  const fixedProfileImageUrl = fixLocalhost(profileImageUrl);
 
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">

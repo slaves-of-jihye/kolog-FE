@@ -5,7 +5,7 @@ import { useState, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { Profile } from '@/shared/ui';
-import { useUpdateProfileMutation } from '@/entities/user';
+import { useUpdateProfileMutation, useProfile } from '@/entities/user';
 
 type ProfileEditModalProps = {
   onClose: () => void;
@@ -14,7 +14,8 @@ type ProfileEditModalProps = {
 };
 
 export const ProfileEditModal = ({ onClose, initialName, onConfirm }: ProfileEditModalProps) => {
-  const [nickname, setNickname] = useState(initialName ?? '');
+  const { nickname: currentNickname, profileImage: currentProfileImage } = useProfile();
+  const [nickname, setNickname] = useState(initialName ?? currentNickname);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -50,6 +51,14 @@ export const ProfileEditModal = ({ onClose, initialName, onConfirm }: ProfileEdi
               <Image
                 src={previewUrl}
                 alt="프로필 미리보기"
+                width={110}
+                height={110}
+                className="size-full rounded-full border-2 border-gray-200 object-cover"
+              />
+            ) : currentProfileImage ? (
+              <Image
+                src={currentProfileImage}
+                alt="현재 프로필"
                 width={110}
                 height={110}
                 className="size-full rounded-full border-2 border-gray-200 object-cover"
@@ -96,9 +105,16 @@ export const ProfileEditModal = ({ onClose, initialName, onConfirm }: ProfileEdi
                 profileImage: profileImage ?? undefined,
               },
               {
-                onSuccess: () => {
+                onSuccess: (response) => {
+                  // localStorage 업데이트
                   localStorage.setItem('nickname', nickname.trim());
+                  if (response.data.profileImage) {
+                    localStorage.setItem('profileImage', response.data.profileImage);
+                  }
+                  // React Query 캐시 무효화하여 최신 데이터 반영
                   queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
+                  // localStorage 변경 이벤트 발생
+                  window.dispatchEvent(new Event('storage'));
                   onConfirm?.(nickname.trim());
                   onClose();
                 },

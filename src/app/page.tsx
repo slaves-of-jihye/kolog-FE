@@ -56,6 +56,7 @@ const Main = () => {
                 time={`${featuredLog.hour}:00`}
                 message={featuredLog.caption}
                 videoUrl={featuredLog.videoUrl}
+                profileImageUrl={featuredLog.profileImage || undefined}
                 showProgress={false}
               />
             )}
