@@ -22,6 +22,7 @@ export const Profile = ({
   return (
     <div
       className={`relative shrink-0 overflow-hidden rounded-full bg-gray-200 ${borderClass} ${className}`.trim()}
+      suppressHydrationWarning
     >
       {src && (
         <img
