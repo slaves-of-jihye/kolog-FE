@@ -1,5 +1,7 @@
 import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
 import EmotionIcon from '@/shared/assets/icons/emotion-icon.svg';
+import { Profile } from './Profile';
+import { fixLocalhost } from '@/shared/lib/url';
 
 type LogComment = {
   authorName: string;
@@ -10,13 +12,15 @@ type LogCardProps = {
   authorName: string;
   time: string;
   message: string;
+  videoUrl?: string;
+  profileImageUrl?: string;
   totalSegments?: number;
   activeSegmentIndex?: number;
   showProgress?: boolean;
   showUploadCta?: boolean;
   uploadCtaLabel?: string;
   onUploadCtaClick?: () => void;
-  onEmotion?: () => void;
+  onEmotion?: (e?: React.MouseEvent) => void;
   comment?: LogComment;
 };
 
@@ -24,6 +28,8 @@ const LogCard = ({
   authorName,
   time,
   message,
+  videoUrl,
+  profileImageUrl,
   totalSegments = 7,
   activeSegmentIndex = 6,
   showProgress = true,
@@ -33,15 +39,32 @@ const LogCard = ({
   onEmotion,
   comment,
 }: LogCardProps) => {
+  const fixedVideoUrl = fixLocalhost(videoUrl);
+  const fixedProfileImageUrl = fixLocalhost(profileImageUrl);
+
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">
-      <div className="absolute inset-0 rounded-[0.625rem] bg-gray-300" />
+      {fixedVideoUrl ? (
+        <video
+          src={fixedVideoUrl}
+          autoPlay
+          muted
+          playsInline
+          loop
+          className="absolute inset-0 h-full w-full rounded-[0.625rem] object-cover"
+        />
+      ) : (
+        <div className="absolute inset-0 rounded-[0.625rem] bg-gray-300" />
+      )}
       <div className="absolute inset-0 rounded-[0.625rem] bg-black/10" />
 
       <div className="relative flex w-full items-center justify-between">
         <div className="flex items-center gap-1">
-          <div className="size-4 shrink-0 rounded-full bg-white" />
-          <p className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white">
+          <Profile className="size-4" src={fixedProfileImageUrl} alt={authorName} border={false} />
+          <p
+            className="text-[0.5rem] tracking-[0.01rem] whitespace-nowrap text-white"
+            suppressHydrationWarning
+          >
             {authorName}
           </p>
         </div>

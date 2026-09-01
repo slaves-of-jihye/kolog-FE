@@ -4,13 +4,17 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogCard } from '@/shared/ui';
 import { Profile } from '@/shared/ui';
-import { useLogChats, useCreateChatMutation } from '@/entities/log';
+import { EmotionPickerModal } from '@/features/emotion-picker';
+import { useLogChats, useCreateChatMutation, useEmotionMutation } from '@/entities/log';
+import { fixLocalhost } from '@/shared/lib/url';
 
 type LogDetailModalProps = {
   logId: number;
   authorName: string;
   time: string;
   message: string;
+  videoUrl?: string;
+  profileImageUrl?: string;
   onClose: () => void;
 };
 
@@ -19,23 +23,23 @@ export const LogDetailModal = ({
   authorName,
   time,
   message,
+  videoUrl,
+  profileImageUrl,
   onClose,
 }: LogDetailModalProps) => {
   const [input, setInput] = useState('');
+  const [showEmotionPicker, setShowEmotionPicker] = useState(false);
   const { data: comments = [] } = useLogChats(logId);
   const queryClient = useQueryClient();
   const { mutate: createChat, isPending } = useCreateChatMutation();
+  const { mutate: addEmotion } = useEmotionMutation();
 
   const handleSubmit = () => {
     const chatContent = input.trim();
     if (!chatContent || isPending) return;
 
-    const storedUserId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-    const userId = storedUserId ? parseInt(storedUserId, 10) : 0;
-    if (!userId) return;
-
     createChat(
-      { userId, logId, chatContent },
+      { logId, chatContent },
       {
         onSuccess: () => {
           setInput('');
@@ -74,7 +78,18 @@ export const LogDetailModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* 선택된 로그 카드 */}
-        <LogCard authorName={authorName} time={time} message={message} showProgress={false} />
+        <LogCard
+          authorName={authorName}
+          time={time}
+          message={message}
+          videoUrl={videoUrl}
+          profileImageUrl={profileImageUrl}
+          showProgress={false}
+          onEmotion={(e) => {
+            e?.stopPropagation();
+            setShowEmotionPicker(true);
+          }}
+        />
 
         {/* 댓글 입력 */}
         <div className="flex items-start gap-1">
@@ -108,7 +123,7 @@ export const LogDetailModal = ({
                 <Profile
                   className="size-6"
                   border
-                  src={comment.profileImage}
+                  src={fixLocalhost(comment.profileImage)}
                   alt={comment.nickname}
                 />
                 <p className="text-[0.625rem] tracking-[0.0125rem] text-gray-800">
@@ -122,6 +137,23 @@ export const LogDetailModal = ({
           ))}
         </div>
       </div>
+
+      {showEmotionPicker && (
+        <EmotionPickerModal
+          onSelect={(emotionId) => {
+            addEmotion(
+              { logId, emotionId },
+              {
+                onSuccess: () => {
+                  alert('반응을 남겼습니다!');
+                  setShowEmotionPicker(false);
+                },
+              },
+            );
+          }}
+          onClose={() => setShowEmotionPicker(false)}
+        />
+      )}
     </div>
   );
 };

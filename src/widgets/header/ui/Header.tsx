@@ -1,9 +1,30 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { ProfileMenu } from '@/features/profile-menu';
 import ArchiveIcon from '@/shared/assets/icons/archive.svg';
 
 export const Header = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const handleLogout = () => {
+    // localStorage 초기화
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('nickname');
+    localStorage.removeItem('profileImage');
+    // React Query 캐시 초기화
+    queryClient.clear();
+    // storage 이벤트 발생
+    window.dispatchEvent(new Event('storage'));
+    router.push('/login');
+  };
+
   return (
     <div className="flex items-center justify-between">
       <Link href="/">
@@ -13,7 +34,7 @@ export const Header = () => {
         <Link href="/log/history" aria-label="보관함">
           <ArchiveIcon className="h-8 w-[2.125rem] shrink-0" />
         </Link>
-        <ProfileMenu />
+        <ProfileMenu onLogout={handleLogout} />
       </div>
     </div>
   );

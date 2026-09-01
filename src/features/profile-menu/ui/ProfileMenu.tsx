@@ -5,15 +5,18 @@ import { useState } from 'react';
 import { LogOut, Pencil } from 'lucide-react';
 import { Profile } from '@/shared/ui';
 import { ProfileEditModal } from './ProfileEditModal';
+import { useProfile } from '@/entities/user';
 
 type ProfileMenuProps = {
   name?: string;
   onLogout?: () => void;
 };
 
-export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) => {
+export const ProfileMenu = ({ name, onLogout }: ProfileMenuProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const { nickname, profileImage } = useProfile();
+  const displayName = name ?? nickname;
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -34,8 +37,9 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
         aria-expanded={isMenuOpen}
         aria-controls="profile-menu"
         aria-label="프로필 메뉴 열기"
+        suppressHydrationWarning
       >
-        <Profile className="size-8" border />
+        <Profile className="size-8" border src={profileImage} alt={displayName} />
       </button>
 
       {isMenuOpen && (
@@ -55,10 +59,13 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
 
             <div className="relative flex flex-col gap-1.5">
               {/* profile row */}
-              <div className="flex items-center gap-1.5">
-                <Profile className="size-6" />
-                <span className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600">
-                  {name}
+              <div className="flex items-center gap-1.5" suppressHydrationWarning>
+                <Profile className="size-6" src={profileImage} alt={displayName} />
+                <span
+                  className="w-[2.3125rem] text-[0.75rem] tracking-[0.015rem] text-gray-600"
+                  suppressHydrationWarning
+                >
+                  {displayName}
                 </span>
               </div>
 
@@ -97,7 +104,9 @@ export const ProfileMenu = ({ name = '박하린', onLogout }: ProfileMenuProps) 
         </>
       )}
 
-      {isEditOpen && <ProfileEditModal initialName={name} onClose={() => setIsEditOpen(false)} />}
+      {isEditOpen && (
+        <ProfileEditModal initialName={displayName} onClose={() => setIsEditOpen(false)} />
+      )}
     </div>
   );
 };

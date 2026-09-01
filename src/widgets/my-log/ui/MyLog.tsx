@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
 import {
   CameraPermissionGuide,
   VIDEO_RECORD_DURATION_MS,
@@ -9,9 +10,17 @@ import {
   useVideoRecord,
 } from '@/features/video-record';
 import { LogCard } from '@/shared/ui';
+import { useHourlyLogs } from '@/entities/log';
+import { useProfile } from '@/entities/user';
 
 export const MyLog = () => {
   const router = useRouter();
+  const { nickname, userId, profileImage } = useProfile();
+  const currentHour = dayjs().hour();
+  const currentDate = dayjs().format('M-D');
+  const { data: logs = [] } = useHourlyLogs(currentHour, currentDate);
+  const myLog = logs.find((log) => log.userId === Number(userId));
+
   const { state, blob, stream, openCamera, flipCamera, startRecording, closeCamera } =
     useVideoRecord(VIDEO_RECORD_DURATION_MS);
   const urlRef = useRef<string | null>(null);
@@ -37,11 +46,13 @@ export const MyLog = () => {
       <div className="flex flex-col gap-2">
         <p className="text-base font-bold text-gray-800">내가 올린 로그</p>
         <LogCard
-          authorName="하린"
-          time="10:00"
-          message="집에 가기"
-          showUploadCta
-          onUploadCtaClick={openCamera}
+          authorName={myLog?.nickname || nickname}
+          time={myLog ? `${myLog.hour}:00` : `${currentHour}:00`}
+          message={myLog?.caption || ''}
+          videoUrl={myLog?.videoUrl}
+          profileImageUrl={myLog?.profileImage || profileImage}
+          showUploadCta={!myLog}
+          onUploadCtaClick={myLog ? undefined : openCamera}
         />
       </div>
 

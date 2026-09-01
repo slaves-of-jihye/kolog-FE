@@ -14,7 +14,19 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'kolog-be.parafara.cloud',
       },
+      {
+        protocol: 'https',
+        hostname: 'api-kolog.parafara.cloud',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8080',
+      },
     ],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    unoptimized: process.env.NODE_ENV === 'development',
   },
   turbopack: {
     rules: {

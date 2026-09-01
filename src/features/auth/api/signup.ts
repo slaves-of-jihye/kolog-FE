@@ -11,12 +11,8 @@ export interface SignupResponse {
   status: number;
   message: string;
   data: {
-    accessToken: string;
-    refreshToken: string;
-    user: {
-      id: number;
-      email: string;
-    };
+    id: number;
+    email: string;
   };
 }
 

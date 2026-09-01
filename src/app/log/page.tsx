@@ -24,7 +24,7 @@ const Log = async ({ searchParams }: { searchParams: SearchParams }) => {
 
         <div className="flex flex-col gap-3">
           {isPastView && <VlogBanner date={date} isCompleted={isCompleted} />}
-          <GroupLog date={date} hour={hour} initialLogs={logs.data} />
+          <GroupLog date={date} hour={hour} initialLogs={logs.data.logs} />
         </div>
       </div>
     </div>
