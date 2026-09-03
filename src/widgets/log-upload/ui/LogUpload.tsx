@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createLog } from '@/features/video-record/api/sendVideoLog';
+import { useCreateLogMutation } from '@/features/video-record/api/sendVideoLog';
 import DownloadIcon from '@/shared/assets/icons/download.svg';
 import NavArrowLeft from '@/shared/assets/icons/nav-arrow-left.svg';
 import { Profile } from '@/shared/ui';
@@ -14,9 +14,9 @@ const SESSION_KEY = 'uploadVideoUrl';
 export const LogUpload = () => {
   const router = useRouter();
   const { nickname, profileImage } = useProfile();
+  const { mutate: uploadLog, isPending } = useCreateLogMutation();
   // lazy initializer로 SSR 안전하게 sessionStorage 읽기
   const [caption, setCaption] = useState('집에 가기');
-  const [isLoading, setIsLoading] = useState(false);
   const [videoUrl] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
     return sessionStorage.getItem(SESSION_KEY);
@@ -39,11 +39,9 @@ export const LogUpload = () => {
   };
 
   const handleUpload = async () => {
-    if (!videoUrl || isLoading) return;
+    if (!videoUrl || isPending) return;
 
     try {
-      setIsLoading(true);
-
       const response = await fetch(videoUrl);
       const blob = await response.blob();
 
@@ -56,24 +54,30 @@ export const LogUpload = () => {
       const day = now.getDate();
       const formattedDate = `${month}-${day}`;
 
-      await createLog({
-        videoFile: videoFile,
-        caption: caption,
-        date: formattedDate,
-        hour: new Date().getHours(),
-      });
-
-      sessionStorage.removeItem(SESSION_KEY);
-      sessionStorage.removeItem('uploadVideoMimeType');
-      URL.revokeObjectURL(videoUrl);
-      router.push('/');
-      alert('로그가 성공적으로 업로드되었습니다!');
+      uploadLog(
+        {
+          videoFile: videoFile,
+          caption: caption,
+          date: formattedDate,
+          hour: new Date().getHours(),
+        },
+        {
+          onSuccess: () => {
+            sessionStorage.removeItem(SESSION_KEY);
+            sessionStorage.removeItem('uploadVideoMimeType');
+            URL.revokeObjectURL(videoUrl);
+            alert('로그가 성공적으로 업로드되었습니다!');
+            router.push('/');
+          },
+          onError: (error) => {
+            console.error('업로드 실패:', error);
+            alert('업로드 중 오류가 발생했어요. 다시 시도해주세요.');
+          },
+        },
+      );
     } catch (error) {
-      console.error('업로드 실패:', error);
-
+      console.error('파일 준비 실패:', error);
       alert('업로드 중 오류가 발생했어요. 다시 시도해주세요.');
-    } finally {
-      setIsLoading(false);
     }
   };
 

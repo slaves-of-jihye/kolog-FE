@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { baseApi } from '@/shared/api/base';
 
 type Log = {
@@ -34,4 +35,15 @@ export const createLog = async (body: Log) => {
     }
     throw error;
   }
+};
+
+export const useCreateLogMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createLog,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['logs'] });
+    },
+  });
 };
