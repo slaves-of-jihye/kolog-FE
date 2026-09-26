@@ -1,5 +1,4 @@
-import axios from 'axios';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { baseApi } from '@/shared/api/base';
 
 export interface SignupRequest {
   email: string;
@@ -8,15 +7,11 @@ export interface SignupRequest {
 }
 
 export interface SignupResponse {
-  status: number;
-  message: string;
-  data: {
-    id: number;
-    email: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const signupApi = async (body: SignupRequest): Promise<SignupResponse> => {
-  const { data } = await axios.post<SignupResponse>(`${API_BASE_URL}/api/v1/users/signup`, body);
+  const { data } = await baseApi.post<SignupResponse>('/api/v1/users/signup', body);
   return data;
 };

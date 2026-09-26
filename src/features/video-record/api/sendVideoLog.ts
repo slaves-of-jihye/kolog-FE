@@ -5,7 +5,7 @@ type Log = {
   videoFile: File;
   caption: string;
   date: string;
-  hour: number;
+  term: number;
 };
 
 export const createLog = async (body: Log) => {
@@ -14,17 +14,9 @@ export const createLog = async (body: Log) => {
   formData.append('videoFile', body.videoFile);
   formData.append('caption', body.caption);
   formData.append('date', body.date);
-  formData.append('hour', String(body.hour));
+  formData.append('term', String(body.term));
   try {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      throw new Error('액세스 토큰이 존재하지 않습니다.');
-    }
-    const { data } = await baseApi.post('/api/v1/logs/video', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await baseApi.post('/api/v1/logs', formData);
     return data;
   } catch (error) {
     if (error && typeof error === 'object' && 'response' in error) {

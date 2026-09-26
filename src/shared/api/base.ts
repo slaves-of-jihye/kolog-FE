@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const baseApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: 'http://localhost:8080',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,6 +15,15 @@ baseApi.interceptors.request.use(
     if (config.data instanceof FormData) {
       config.headers.delete('Content-Type');
     }
+
+    // 저장된 access token을 모든 요청에 자동으로 부착
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        config.headers.set('Authorization', `Bearer ${token}`);
+      }
+    }
+
     return config;
   },
   (error) => {
@@ -26,8 +35,8 @@ baseApi.interceptors.request.use(
 baseApi.interceptors.response.use(
   (response) => response,
   (error) => {
-    // 403 에러 (인증 실패) 시 로그인 페이지로 리다이렉트
-    if (error.response?.status === 403) {
+    // 401 (인증 실패) 시 로그인 페이지로 리다이렉트
+    if (error.response?.status === 401) {
       console.error('인증 실패: 토큰이 만료되었거나 유효하지 않습니다.');
       // 클라이언트 사이드에서만 실행하고, 이미 로그인/회원가입 페이지가 아닌 경우에만
       if (typeof window !== 'undefined') {
