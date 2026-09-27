@@ -170,26 +170,27 @@ export const LogDetailModal = ({ log, onClose, initialEditing = false }: LogDeta
           </div>
         )}
 
-        {/* 댓글 입력 */}
-        <div className="flex items-start gap-1">
-          <input
-            className="focus:border-primary-300 min-w-0 flex-1 rounded-[0.25rem] border border-gray-200 bg-white px-2 py-2 text-[0.625rem] tracking-[0.0125rem] text-gray-800 outline-none placeholder:text-gray-400"
-            placeholder="무엇이든 남겨 보세요!"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleSubmit();
-            }}
-          />
-          <button
-            type="button"
-            disabled={isChatPending || !input.trim()}
-            onClick={handleSubmit}
-            className="bg-primary-200 shrink-0 rounded-[0.25rem] px-2.5 py-2 text-[0.625rem] tracking-[0.0125rem] text-gray-800 disabled:opacity-50"
-          >
-            전송
-          </button>
-        </div>
+        {!isEditing && (
+          <div className="flex items-start gap-1">
+            <input
+              className="focus:border-primary-300 min-w-0 flex-1 rounded-[0.25rem] border border-gray-200 bg-white px-2 py-2 text-[0.625rem] tracking-[0.0125rem] text-gray-800 outline-none placeholder:text-gray-400"
+              placeholder="무엇이든 남겨 보세요!"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleSubmit();
+              }}
+            />
+            <button
+              type="button"
+              disabled={isChatPending || !input.trim()}
+              onClick={handleSubmit}
+              className="bg-primary-200 shrink-0 rounded-[0.25rem] px-2.5 py-2 text-[0.625rem] tracking-[0.0125rem] text-gray-800 disabled:opacity-50"
+            >
+              전송
+            </button>
+          </div>
+        )}
 
         {/* 댓글 목록 */}
         <div className="flex flex-col gap-2">
