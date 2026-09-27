@@ -19,7 +19,7 @@ export const LogUpload = () => {
   const router = useRouter();
   const { nickname, profileImage } = useProfile();
   const { mutate: uploadLog, isPending } = useCreateLogMutation();
-  const [caption, setCaption] = useState('집에 가기');
+  const [caption, setCaption] = useState('');
   const [uploadError, setUploadError] = useState('');
   const videoUrl = useSyncExternalStore(
     subscribeToVideoUrl,
