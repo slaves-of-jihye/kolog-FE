@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import {
@@ -10,7 +10,8 @@ import {
   useVideoRecord,
 } from '@/features/video-record';
 import { LogCard } from '@/shared/ui';
-import { useLogs } from '@/entities/log';
+import { LogDetailModal } from '@/features/log-detail';
+import { useDeleteLogMutation, useLogs } from '@/entities/log';
 import { useProfile } from '@/entities/user';
 import { mdToIso } from '@/shared/lib/date';
 
@@ -19,8 +20,10 @@ export const MyLog = () => {
   const { nickname, userId, profileImage } = useProfile();
   const currentHour = dayjs().hour();
   const currentDate = dayjs().format('M-D');
-  const { data: logs = [] } = useLogs({ date: mdToIso(currentDate), hour: currentHour });
+  const { data: logs = [] } = useLogs({ date: mdToIso(currentDate), hour: currentHour, userId });
   const myLog = logs.find((log) => log.uploader.id === userId);
+  const [isEditingMyLog, setIsEditingMyLog] = useState(false);
+  const { mutate: deleteLog, isPending: isDeletePending } = useDeleteLogMutation();
 
   const { state, blob, stream, openCamera, flipCamera, startRecording, closeCamera } =
     useVideoRecord(VIDEO_RECORD_DURATION_MS);
@@ -35,6 +38,14 @@ export const MyLog = () => {
     sessionStorage.setItem('uploadVideoMimeType', blob.type);
     router.push('/log/upload');
   }, [state, blob, router]);
+
+  const handleDeleteMyLog = () => {
+    if (!myLog || isDeletePending) return;
+    if (!confirm('이 로그를 삭제할까요? 되돌릴 수 없습니다.')) return;
+    deleteLog(myLog.id, {
+      onError: () => alert('로그 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.'),
+    });
+  };
 
   // useEffect(() => {
   //   return () => {
@@ -54,8 +65,14 @@ export const MyLog = () => {
           profileImageUrl={myLog?.uploader.profileImageUrl || profileImage}
           showUploadCta={!myLog}
           onUploadCtaClick={myLog ? undefined : openCamera}
+          onEditLog={myLog ? () => setIsEditingMyLog(true) : undefined}
+          onDeleteLog={myLog ? handleDeleteMyLog : undefined}
         />
       </div>
+
+      {myLog && isEditingMyLog && (
+        <LogDetailModal log={myLog} initialEditing onClose={() => setIsEditingMyLog(false)} />
+      )}
 
       {stream && (state === 'previewing' || state === 'recording') && (
         <VideoRecorder

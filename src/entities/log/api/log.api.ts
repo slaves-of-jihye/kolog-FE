@@ -43,8 +43,9 @@ export const logApi = {
 
 export const useLogs = (params: LogListParams = {}) => {
   return useQuery({
-    queryKey: ['logs', 'list', params.date, params.hour],
+    queryKey: ['logs', 'list', params.date, params.hour, params.userId],
     queryFn: () => logApi.getLogs(params),
+    enabled: params.userId === undefined || params.userId > 0,
   });
 };
 

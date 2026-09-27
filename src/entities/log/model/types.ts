@@ -18,6 +18,7 @@ export interface Log {
 export interface LogListParams {
   date?: string;
   hour?: number;
+  userId?: number;
 }
 
 export interface LogUpdateParams {

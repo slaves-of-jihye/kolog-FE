@@ -17,12 +17,13 @@ import { fixLocalhost } from '@/shared/lib/url';
 type LogDetailModalProps = {
   log: Log;
   onClose: () => void;
+  initialEditing?: boolean;
 };
 
-export const LogDetailModal = ({ log, onClose }: LogDetailModalProps) => {
+export const LogDetailModal = ({ log, onClose, initialEditing = false }: LogDetailModalProps) => {
   const [input, setInput] = useState('');
   const [showEmotionPicker, setShowEmotionPicker] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(initialEditing);
   const [editCaption, setEditCaption] = useState(log.caption ?? '');
   const [editVideoFile, setEditVideoFile] = useState<File | null>(null);
 

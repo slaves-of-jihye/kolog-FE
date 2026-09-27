@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import MoreVertical from '@/shared/assets/icons/more-vertical.svg';
 import EmotionIcon from '@/shared/assets/icons/emotion-icon.svg';
 import { Profile } from './Profile';
@@ -21,6 +24,8 @@ type LogCardProps = {
   uploadCtaLabel?: string;
   onUploadCtaClick?: () => void;
   onEmotion?: (e?: React.MouseEvent) => void;
+  onEditLog?: () => void;
+  onDeleteLog?: () => void;
   comment?: LogComment;
 };
 
@@ -37,10 +42,14 @@ const LogCard = ({
   uploadCtaLabel = '눌러서 촬영',
   onUploadCtaClick,
   onEmotion,
+  onEditLog,
+  onDeleteLog,
   comment,
 }: LogCardProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const fixedVideoUrl = fixLocalhost(videoUrl);
   const fixedProfileImageUrl = fixLocalhost(profileImageUrl);
+  const canManage = !!onEditLog || !!onDeleteLog;
 
   return (
     <div className="relative flex h-[10.125rem] w-full shrink-0 flex-col items-center justify-between overflow-hidden rounded-[0.625rem] p-3">
@@ -68,7 +77,72 @@ const LogCard = ({
             {authorName}
           </p>
         </div>
-        <MoreVertical className="size-4 fill-white" />
+        {canManage ? (
+          <div className="relative">
+            <button
+              type="button"
+              className="shrink-0"
+              aria-haspopup="menu"
+              aria-expanded={isMenuOpen}
+              aria-controls="log-card-menu"
+              aria-label="로그 관리 메뉴 열기"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMenuOpen((prev) => !prev);
+              }}
+            >
+              <MoreVertical className="size-4 fill-white" />
+            </button>
+
+            {isMenuOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsMenuOpen(false);
+                  }}
+                />
+                <div
+                  id="log-card-menu"
+                  role="menu"
+                  className="absolute top-5 right-0 z-50 flex flex-col gap-1 overflow-hidden rounded-lg bg-white/90 p-2 whitespace-nowrap shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] backdrop-blur-xl"
+                >
+                  {onEditLog && (
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="rounded-md px-2 py-1 text-left text-[0.625rem] tracking-[0.0125rem] text-gray-700 hover:bg-gray-100"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMenuOpen(false);
+                        onEditLog();
+                      }}
+                    >
+                      수정
+                    </button>
+                  )}
+                  {onDeleteLog && (
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="rounded-md px-2 py-1 text-left text-[0.625rem] tracking-[0.0125rem] text-red-500 hover:bg-gray-100"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMenuOpen(false);
+                        onDeleteLog();
+                      }}
+                    >
+                      삭제
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        ) : (
+          <MoreVertical className="size-4 fill-white" />
+        )}
       </div>
 
       <div className="text-primary-50 relative flex flex-col items-center gap-0.5 text-center">
