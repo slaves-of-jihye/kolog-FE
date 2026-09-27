@@ -8,15 +8,3 @@ export interface UserMeResponse {
   nickname: string;
   profileImageUrl: string | null;
 }
-
-export interface UserProfileResponse {
-  status: number;
-  message: string;
-  data: {
-    userId: number;
-    nickname: string;
-    profileImage: string;
-    email: string;
-    createdAt: string;
-  };
-}

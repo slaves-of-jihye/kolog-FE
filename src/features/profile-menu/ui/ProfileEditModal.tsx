@@ -2,7 +2,6 @@
 
 import { Pencil } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { Profile } from '@/shared/ui';
 import { useUpdateProfileMutation, useProfile } from '@/entities/user';
@@ -19,7 +18,6 @@ export const ProfileEditModal = ({ onClose, initialName, onConfirm }: ProfileEdi
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
   const { mutate: updateProfile, isPending } = useUpdateProfileMutation();
 
   const handleImageClick = () => {
@@ -106,13 +104,10 @@ export const ProfileEditModal = ({ onClose, initialName, onConfirm }: ProfileEdi
               },
               {
                 onSuccess: (response) => {
-                  // localStorage 업데이트
-                  localStorage.setItem('nickname', nickname.trim());
-                  if (response.data.profileImage) {
-                    localStorage.setItem('profileImage', response.data.profileImage);
+                  localStorage.setItem('nickname', response.nickname);
+                  if (response.profileImageUrl) {
+                    localStorage.setItem('profileImage', response.profileImageUrl);
                   }
-                  // React Query 캐시 무효화하여 최신 데이터 반영
-                  queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
                   // localStorage 변경 이벤트 발생
                   window.dispatchEvent(new Event('storage'));
                   onConfirm?.(nickname.trim());

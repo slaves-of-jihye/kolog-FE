@@ -2,10 +2,10 @@
 
 import { Header } from '@/widgets/header';
 import { HistoryList } from '@/widgets/history-list';
-import { useAvailableHours } from '@/entities/log';
+import { useRecentLogDays } from '@/entities/log';
 
 const History = () => {
-  const { data: availableHours, isLoading } = useAvailableHours();
+  const { data: recentDays, isLoading } = useRecentLogDays();
 
   return (
     <div className="relative min-h-screen w-full bg-white">
@@ -18,7 +18,7 @@ const History = () => {
             </p>
           </div>
         ) : (
-          <HistoryList dateHours={availableHours} />
+          <HistoryList dateHours={recentDays} />
         )}
       </div>
     </div>

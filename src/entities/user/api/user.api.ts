@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { baseApi } from '@/shared/api/base';
-import { UpdateProfileRequest, UserMeResponse, UserProfileResponse } from '../model/types';
+import { UpdateProfileRequest, UserMeResponse } from '../model/types';
 
 export const userApi = {
   getMe: async () => {
@@ -13,7 +13,7 @@ export const userApi = {
     if (nickname) formData.append('nickname', nickname);
     if (profileImage) formData.append('profileImage', profileImage);
 
-    const response = await baseApi.patch<UserProfileResponse>('/api/v1/users/profile', formData);
+    const response = await baseApi.patch<UserMeResponse>('/api/v1/users/me', formData);
     return response.data;
   },
 };
@@ -34,7 +34,11 @@ export const useUserMe = () => {
 };
 
 export const useUpdateProfileMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: UpdateProfileRequest) => userApi.updateProfile(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
+    },
   });
 };
