@@ -1,5 +1,4 @@
-import axios from 'axios';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { baseApi } from '@/shared/api/base';
 
 export interface LoginRequest {
   email: string;
@@ -7,16 +6,11 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  status: number;
-  message: string;
-  data: {
-    grantType: string;
-    accessToken: string;
-    refreshToken: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const loginApi = async (body: LoginRequest): Promise<LoginResponse> => {
-  const { data } = await axios.post<LoginResponse>(`${API_BASE_URL}/api/v1/users/login`, body);
+  const { data } = await baseApi.post<LoginResponse>('/api/v1/users/login', body);
   return data;
 };

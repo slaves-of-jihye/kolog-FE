@@ -18,7 +18,7 @@ const getMimeType = (): string => {
 };
 
 const requestStream = (facingMode: 'user' | 'environment') =>
-  navigator.mediaDevices.getUserMedia({ video: { facingMode }, audio: true });
+  navigator.mediaDevices.getUserMedia({ video: { facingMode }, audio: false });
 
 export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
   const [state, setState] = useState<RecordState>('idle');
@@ -86,7 +86,9 @@ export const useVideoRecord = (durationMs = VIDEO_RECORD_DURATION_MS) => {
     if (state !== 'previewing' || !streamRef.current) return;
 
     const mimeType = getMimeType();
-    const recorder = new MediaRecorder(streamRef.current, { mimeType });
+    const recorder = new MediaRecorder(new MediaStream(streamRef.current.getVideoTracks()), {
+      mimeType,
+    });
     const chunks: BlobPart[] = [];
 
     recorder.ondataavailable = (e) => {

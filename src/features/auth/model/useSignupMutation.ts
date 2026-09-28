@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { signupApi, type SignupRequest } from '../api/signup';
+import { saveAuthSession } from './saveAuthSession';
 
 const ERROR_MESSAGES: Record<number, string> = {
   409: '이미 사용 중인 이메일입니다.',
@@ -20,11 +21,10 @@ export const useSignupMutation = ({ onApiError }: UseSignupMutationOptions) => {
 
   return useMutation({
     mutationFn: (body: SignupRequest) => signupApi(body),
-    onSuccess: ({ data }, variables) => {
-      // 회원가입 성공 시 userId와 nickname 저장하고 로그인 페이지로 이동
-      localStorage.setItem('userId', String(data.id));
+    onSuccess: (tokens, variables) => {
       localStorage.setItem('nickname', variables.nickname);
-      router.push('/login');
+      saveAuthSession(tokens);
+      router.push('/');
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {

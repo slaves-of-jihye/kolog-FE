@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+import dayjs from 'dayjs';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useCreateLogMutation } from '@/features/video-record/api/sendVideoLog';
 import DownloadIcon from '@/shared/assets/icons/download.svg';
@@ -11,16 +13,19 @@ import { useProfile } from '@/entities/user';
 
 const SESSION_KEY = 'uploadVideoUrl';
 
+const subscribeToVideoUrl = () => () => {};
+
 export const LogUpload = () => {
   const router = useRouter();
   const { nickname, profileImage } = useProfile();
   const { mutate: uploadLog, isPending } = useCreateLogMutation();
-  // lazy initializer로 SSR 안전하게 sessionStorage 읽기
-  const [caption, setCaption] = useState('집에 가기');
-  const [videoUrl] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null;
-    return sessionStorage.getItem(SESSION_KEY);
-  });
+  const [caption, setCaption] = useState('');
+  const [uploadError, setUploadError] = useState('');
+  const videoUrl = useSyncExternalStore(
+    subscribeToVideoUrl,
+    () => sessionStorage.getItem(SESSION_KEY),
+    () => null,
+  );
 
   // useEffect(() => {
   //   return () => {
@@ -40,6 +45,7 @@ export const LogUpload = () => {
 
   const handleUpload = async () => {
     if (!videoUrl || isPending) return;
+    setUploadError('');
 
     try {
       const response = await fetch(videoUrl);
@@ -49,17 +55,14 @@ export const LogUpload = () => {
       const ext = mimeType.includes('webm') ? 'webm' : 'mp4';
       const videoFile = new File([blob], `log-video-${Date.now()}.${ext}`, { type: mimeType });
 
-      const now = new Date();
-      const month = now.getMonth() + 1;
-      const day = now.getDate();
-      const formattedDate = `${month}-${day}`;
+      const formattedDate = dayjs().format('YYYY-MM-DD');
 
       uploadLog(
         {
           videoFile: videoFile,
           caption: caption,
           date: formattedDate,
-          hour: new Date().getHours(),
+          term: new Date().getHours(),
         },
         {
           onSuccess: () => {
@@ -71,13 +74,21 @@ export const LogUpload = () => {
           },
           onError: (error) => {
             console.error('업로드 실패:', error);
-            alert('업로드 중 오류가 발생했어요. 다시 시도해주세요.');
+            const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+            const messages: Record<number, string> = {
+              400: '영상 형식 또는 업로드 정보가 올바르지 않습니다.',
+              401: '로그인이 만료됐습니다. 다시 로그인해 주세요.',
+              413: '영상 용량이 너무 큽니다.',
+            };
+            setUploadError(
+              messages[status ?? 0] ?? '업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+            );
           },
         },
       );
     } catch (error) {
       console.error('파일 준비 실패:', error);
-      alert('업로드 중 오류가 발생했어요. 다시 시도해주세요.');
+      setUploadError('영상 파일을 읽을 수 없습니다. 다시 촬영해 주세요.');
     }
   };
 
@@ -147,10 +158,16 @@ export const LogUpload = () => {
         <button
           type="button"
           onClick={handleUpload}
+          disabled={!videoUrl || isPending}
           className="bg-primary-100 flex h-7 w-full items-center justify-center rounded-[0.5rem] text-[0.75rem] tracking-[0.015rem] text-gray-600"
         >
           업로드하기
         </button>
+        {uploadError && (
+          <p role="alert" className="text-xs text-red-500">
+            {uploadError}
+          </p>
+        )}
       </div>
     </div>
   );

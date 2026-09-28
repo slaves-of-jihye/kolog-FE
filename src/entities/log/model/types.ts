@@ -1,97 +1,55 @@
+export interface LogAuthor {
+  id: number;
+  nickname: string;
+  profileImageUrl: string | null;
+}
+
 export interface Log {
-  logId: number;
+  id: number;
+  uploader: LogAuthor;
   videoUrl: string;
-  caption: string;
+  caption: string | null;
   date: string;
   hour: number;
-  userId: number;
-  nickname: string;
-  profileImage: string | null;
+  comments: Chat[];
+  emotions: Emotion[];
 }
 
-export interface HourlyLogResponse {
-  status: number;
-  message: string;
-  data: {
-    hours: number[];
-    logs: Log[];
-  };
+export interface LogListParams {
+  date?: string;
+  hour?: number;
+  userId?: number;
 }
 
-export interface EmotionRequest {
+export interface LogUpdateParams {
   logId: number;
-  emotionId: number;
-}
-
-export interface EmotionResponse {
-  status: number;
-  message: string;
-  emotionId: number;
+  caption?: string;
+  videoFile?: File;
 }
 
 export interface Chat {
-  chatId: number;
-  userId: number;
-  nickname: string;
-  profileImage: string;
-  chatContent: string;
-}
-
-export interface LogChatResponse {
-  status: number;
-  message: string;
-  data: Chat[];
+  id: number;
+  author: LogAuthor;
+  content: string;
 }
 
 export interface CreateChatRequest {
   logId: number;
-  chatContent: string;
+  content: string;
 }
 
-export interface CreateChatResponse {
-  status: number;
-  message: string;
-  chatContent: string;
+export interface Emotion {
+  id: number;
+  author: LogAuthor;
+  emotionId: string;
 }
 
-export interface DateLogItem {
-  date: string;
-  hour: number;
-  userId: number;
-  nickname: string;
-  profileImage: string;
-  videoUrl: string;
-  caption: string;
-}
-
-export interface DateLogResponse {
-  status: number;
-  message: string;
-  data: DateLogItem[];
-}
-
-export interface UpdateCaptionRequest {
+export interface EmotionRequest {
   logId: number;
-  caption: string;
+  emotionId: string;
 }
 
-export interface UpdateCaptionResponse {
-  status: number;
-  message: string;
-  data: {
-    logId: number;
-    caption: string;
-    updatedAt: string;
-  };
-}
-
-export interface HourListItem {
-  date: string;
+export interface RecentLogDay {
+  date: string; // 'M-D' 형식
   hours: number[];
-}
-
-export interface HourListResponse {
-  status: number;
-  message: string;
-  data: HourListItem[];
 }

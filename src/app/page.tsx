@@ -8,13 +8,14 @@ import UsersIcon from '@/shared/assets/icons/users-icon.svg';
 import { LogCard } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { MyLog } from '@/widgets/my-log';
-import { useHourlyLogs } from '@/entities/log';
+import { useLogs } from '@/entities/log';
+import { mdToIso } from '@/shared/lib/date';
 
 const Main = () => {
   const router = useRouter();
   const today = dayjs().format('M-D');
   const currentHour = dayjs().hour();
-  const { data: logs } = useHourlyLogs(currentHour, today);
+  const { data: logs } = useLogs({ date: mdToIso(today), hour: currentHour });
 
   // 인증 체크
   useEffect(() => {
@@ -39,9 +40,7 @@ const Main = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <UsersIcon className="size-5" />
-                <p className="text-base font-bold text-gray-800">
-                  {process.env.NEXT_PUBLIC_GROUP_NAME || '우리 반'}
-                </p>
+                <p className="text-base font-bold text-gray-800">우리 반</p>
               </div>
               <Link
                 href={`/log?date=${today}&hour=${currentHour}`}
@@ -52,11 +51,11 @@ const Main = () => {
             </div>
             {featuredLog && (
               <LogCard
-                authorName={featuredLog.nickname}
+                authorName={featuredLog.uploader.nickname}
                 time={`${featuredLog.hour}:00`}
-                message={featuredLog.caption}
+                message={featuredLog.caption ?? ''}
                 videoUrl={featuredLog.videoUrl}
-                profileImageUrl={featuredLog.profileImage || undefined}
+                profileImageUrl={featuredLog.uploader.profileImageUrl || undefined}
                 showProgress={false}
               />
             )}

@@ -29,7 +29,7 @@ export const LogList = ({ logs }: LogListProps) => {
       <div className="flex flex-col gap-2">
         {logs.map((log, i) => (
           <div
-            key={log.logId ?? i}
+            key={log.id}
             role="button"
             tabIndex={0}
             className="cursor-pointer"
@@ -44,32 +44,22 @@ export const LogList = ({ logs }: LogListProps) => {
             }}
           >
             <LogCard
-              authorName={log.nickname}
+              authorName={log.uploader.nickname}
               time={`${log.hour}:00`}
-              message={log.caption}
+              message={log.caption ?? ''}
               videoUrl={log.videoUrl}
-              profileImageUrl={log.profileImage || undefined}
+              profileImageUrl={log.uploader.profileImageUrl || undefined}
               showProgress={false}
               onEmotion={(e) => {
                 e?.stopPropagation();
-                setEmotionPickerLogId(log.logId);
+                setEmotionPickerLogId(log.id);
               }}
             />
           </div>
         ))}
       </div>
 
-      {selected && (
-        <LogDetailModal
-          logId={selected.logId}
-          authorName={selected.nickname}
-          time={`${selected.hour}:00`}
-          message={selected.caption}
-          videoUrl={selected.videoUrl}
-          profileImageUrl={selected.profileImage || undefined}
-          onClose={() => setSelectedIndex(null)}
-        />
-      )}
+      {selected && <LogDetailModal log={selected} onClose={() => setSelectedIndex(null)} />}
 
       {emotionPickerLogId !== null && (
         <EmotionPickerModal
@@ -79,6 +69,10 @@ export const LogList = ({ logs }: LogListProps) => {
               {
                 onSuccess: () => {
                   alert('반응을 남겼습니다!');
+                  setEmotionPickerLogId(null);
+                },
+                onError: () => {
+                  alert('이미 반응을 남겼거나 오류가 발생했습니다.');
                   setEmotionPickerLogId(null);
                 },
               },

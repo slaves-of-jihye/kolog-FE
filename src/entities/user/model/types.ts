@@ -3,14 +3,8 @@ export interface UpdateProfileRequest {
   profileImage?: File;
 }
 
-export interface UserProfileResponse {
-  status: number;
-  message: string;
-  data: {
-    userId: number;
-    nickname: string;
-    profileImage: string;
-    email: string;
-    createdAt: string;
-  };
+export interface UserMeResponse {
+  id: number;
+  nickname: string;
+  profileImageUrl: string | null;
 }

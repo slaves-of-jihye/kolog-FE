@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import { LogList } from '@/widgets/log-list';
-import { useHourlyLogs, useAvailableHours, Log } from '@/entities/log';
+import { Log, useLogs } from '@/entities/log';
+import { mdToIso } from '@/shared/lib/date';
 
 type GroupLogProps = {
   date?: string;
@@ -18,12 +19,10 @@ export const GroupLog = ({ date, hour, initialLogs }: GroupLogProps) => {
   const resolvedHour = hour ?? dayjs().hour();
   const [currentHour, setCurrentHour] = useState(resolvedHour);
 
-  const { data: availableHours } = useAvailableHours();
-  const { data: logs } = useHourlyLogs(currentHour, formattedDate);
-  const displayLogs = logs ?? initialLogs ?? [];
-
-  // 현재 날짜의 사용 가능한 시간대 찾기
-  const dateHours = availableHours?.find((item) => item.date === formattedDate)?.hours ?? [];
+  const { data: dayLogs } = useLogs({ date: mdToIso(formattedDate) });
+  const logsForDay = dayLogs ?? initialLogs ?? [];
+  const dateHours = Array.from(new Set(logsForDay.map((log) => log.hour))).sort((a, b) => a - b);
+  const displayLogs = logsForDay.filter((log) => log.hour === currentHour);
   const currentIndex = dateHours.indexOf(currentHour);
 
   const handleHourChange = (newHour: number) => {
@@ -47,9 +46,7 @@ export const GroupLog = ({ date, hour, initialLogs }: GroupLogProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <p className="text-base font-bold text-gray-800">
-            {process.env.NEXT_PUBLIC_GROUP_NAME || '우리 반'} 로그
-          </p>
+          <p className="text-base font-bold text-gray-800">우리 반 로그</p>
           <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">
             {date ?? formattedDate} · {currentHour}:00
           </p>
