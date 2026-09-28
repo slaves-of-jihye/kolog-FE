@@ -46,9 +46,7 @@ export const GroupLog = ({ date, hour, initialLogs }: GroupLogProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <p className="text-base font-bold text-gray-800">
-            {process.env.NEXT_PUBLIC_GROUP_NAME || '우리 반'} 로그
-          </p>
+          <p className="text-base font-bold text-gray-800">우리 반 로그</p>
           <p className="text-[0.75rem] tracking-[0.015rem] text-gray-500">
             {date ?? formattedDate} · {currentHour}:00
           </p>

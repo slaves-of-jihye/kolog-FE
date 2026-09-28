@@ -40,9 +40,7 @@ const Main = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <UsersIcon className="size-5" />
-                <p className="text-base font-bold text-gray-800">
-                  {process.env.NEXT_PUBLIC_GROUP_NAME || '우리 반'}
-                </p>
+                <p className="text-base font-bold text-gray-800">우리 반</p>
               </div>
               <Link
                 href={`/log?date=${today}&hour=${currentHour}`}
